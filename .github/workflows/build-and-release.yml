@@ -119,9 +119,9 @@ jobs:
       - name: List modules
         run: |
           if [ "${{ matrix.goarch }}" = "amd64" ]; then
-            ./caddy-build/caddy list-modules
+            ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br)'
           else
-            qemu-aarch64-static ./caddy-build/caddy list-modules
+            qemu-aarch64-static ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br)'
           fi
 
       - name: Generate man pages and completions
@@ -256,8 +256,8 @@ jobs:
           - dns.providers.cloudflare
           - caddy.storage.redis
           - caddy.storage.postgres
-          - caddy.storage.cf-kv
-          - http.encoders.brotli
+          - caddy.storage.cloudflare_kv
+          - http.encoders.br
           EOF
 
       - name: Deploy to GitHub Pages
@@ -280,8 +280,8 @@ jobs:
             - dns.providers.cloudflare
             - caddy.storage.redis
             - caddy.storage.postgres
-            - caddy.storage.cf-kv
-            - http.encoders.brotli
+            - caddy.storage.cloudflare_kv
+            - http.encoders.br
             
             ### Installation via APT
             See [installation instructions](https://crazyuploader.github.io/caddy)
