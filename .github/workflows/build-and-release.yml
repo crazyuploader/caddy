@@ -97,21 +97,30 @@ jobs:
           if [ "${{ matrix.goarch }}" = "amd64" ]; then
             # Native execution
             ./caddy-build/caddy version
-            ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|http.encoders.brotli)'
+            ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cf_kv|http.encoders.brotli)'
           else
             # Use QEMU for ARM64
             sudo apt-get update
             sudo apt-get install -y qemu-user-static
             qemu-aarch64-static ./caddy-build/caddy version
-            qemu-aarch64-static ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|http.encoders.brotli)'
+            qemu-aarch64-static ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cf_kv|http.encoders.brotli)'
           fi
 
       - name: Generate man pages and completions
         run: |
           mkdir -p caddy-dist/man caddy-dist/scripts
-          ./caddy-build/caddy manpage --directory ./caddy-dist/man
+          if [ "${{ matrix.goarch }}" = "amd64" ]; then
+            # Native execution for amd64
+            ./caddy-build/caddy manpage --directory ./caddy-dist/man
+            ./caddy-build/caddy completion bash > ./caddy-dist/scripts/bash-completion
+          else
+            # Use QEMU for ARM64
+            sudo apt-get update
+            sudo apt-get install -y qemu-user-static
+            qemu-aarch64-static ./caddy-build/caddy manpage --directory ./caddy-dist/man
+            qemu-aarch64-static ./caddy-build/caddy completion bash > ./caddy-dist/scripts/bash-completion
+          fi
           gzip -r ./caddy-dist/man/
-          ./caddy-build/caddy completion bash > ./caddy-dist/scripts/bash-completion
 
       - name: Create package files
         run: |
@@ -207,10 +216,10 @@ jobs:
 
           ```bash
           # Add GPG key
-          curl -fsSL https://yourusername.github.io/caddy-custom-builds/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+          curl -fsSL https://crazyuploader.github.io/caddy/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
 
           # Add repository
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://yourusername.github.io/caddy-custom-builds stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://crazyuploader.github.io/caddy stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
 
           # Install
           sudo apt update
@@ -250,7 +259,7 @@ jobs:
             - Brotli Compression (`http.encoders.brotli`)
 
             ### Installation via APT
-            See [installation instructions](https://yourusername.github.io/caddy-custom-builds/)
+            See [installation instructions](https://crazyuploader.github.io/caddy)
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
