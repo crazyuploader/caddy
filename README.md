@@ -18,10 +18,10 @@
 
 ```bash
 # Add GPG key
-curl -fsSL https://crazyuploader.github.io/caddy/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+curl -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
 
 # Add repository
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://crazyuploader.github.io/caddy stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
 
 # Install
 sudo apt update

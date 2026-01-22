@@ -241,10 +241,10 @@ jobs:
           
           ```bash
           # Add GPG key
-          curl -fsSL https://crazyuploader.github.io/caddy/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+          curl -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
           
           # Add repository
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://crazyuploader.github.io/caddy stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
           
           # Install
           sudo apt update
@@ -260,12 +260,12 @@ jobs:
           - http.encoders.br
           EOF
 
-      - name: Deploy to GitHub Pages
+      - name: Push to cf-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          publish_branch: gh-pages
+          publish_branch: cf-pages
           force_orphan: true
 
       - name: Create GitHub Release
@@ -284,7 +284,7 @@ jobs:
             - http.encoders.br
             
             ### Installation via APT
-            See [installation instructions](https://crazyuploader.github.io/caddy)
+            See [installation instructions](https://caddy.devjugal.com)
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
