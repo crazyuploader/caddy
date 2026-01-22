@@ -28,6 +28,37 @@ sudo apt update
 sudo apt install caddy
 ```
 
+### Migrate from Official Caddy (One-liner)
+
+If you have the official Caddy package installed, this one-liner will backup configs, disable the official repo, and install the custom build:
+
+```bash
+curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo bash
+```
+
+<details>
+<summary>Or run manually</summary>
+
+```bash
+# Backup existing configs
+sudo cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.official.bak 2>/dev/null || true
+sudo cp /lib/systemd/system/caddy.service /lib/systemd/system/caddy.service.official.bak 2>/dev/null || true
+
+# Disable official Caddy repo
+sudo mv /etc/apt/sources.list.d/caddy-stable.list /etc/apt/sources.list.d/caddy-stable.list.disabled 2>/dev/null || true
+
+# Stop Caddy
+sudo systemctl stop caddy 2>/dev/null || true
+
+# Add custom repo and install
+curl -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+sudo apt update
+sudo apt install caddy
+```
+
+</details>
+
 ## Usage
 
 After installation, Caddy runs as a systemd service:

@@ -233,6 +233,7 @@ jobs:
           mkdir -p public
           cp -r ~/.aptly/public/* public/
           gpg --armor --export ${{ secrets.GPG_KEY_ID }} > public/public.key
+          cp ./scripts/migrate.sh public/migrate.sh
 
           cat > public/README.md << 'EOF'
           # Custom Caddy APT Repository
