@@ -44,7 +44,19 @@ echo ""
 echo "Adding custom Caddy repository..."
 curl -fsSL https://caddy.devjugal.com/public.key | gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | tee /etc/apt/sources.list.d/caddy-custom.list > /dev/null
-echo "✓ Added custom repository"
+
+# Pin custom repo to have higher priority than Ubuntu repos
+cat > /etc/apt/preferences.d/caddy-custom << 'EOF'
+Package: caddy
+Pin: origin caddy.devjugal.com
+Pin-Priority: 1001
+EOF
+echo "✓ Added custom repository with high priority"
+
+# Disable Ubuntu Pro ESM caddy if present
+if [ -f /etc/apt/sources.list.d/ubuntu-pro-esm-apps.sources ]; then
+    echo "✓ Note: Ubuntu Pro ESM detected, custom repo will override"
+fi
 
 # Install
 echo ""

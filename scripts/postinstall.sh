@@ -37,6 +37,15 @@ fi
 chown -R caddy:caddy /var/lib/caddy 2>/dev/null || true
 chown -R caddy:caddy /etc/caddy 2>/dev/null || true
 
+# Add APT pinning to prefer custom repo over Ubuntu/Debian repos
+if [ ! -f /etc/apt/preferences.d/caddy-custom ]; then
+    cat > /etc/apt/preferences.d/caddy-custom << 'EOF'
+Package: caddy
+Pin: origin caddy.devjugal.com
+Pin-Priority: 1001
+EOF
+fi
+
 # Reload systemd
 if [ -d /run/systemd/system ]; then
     systemctl daemon-reload >/dev/null 2>&1 || true
