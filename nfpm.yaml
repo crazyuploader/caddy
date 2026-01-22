@@ -15,6 +15,9 @@ license: "MIT"
 provides:
   - httpd
 
+replaces:
+  - caddy
+
 contents:
   - src: ./caddy-build/caddy
     dst: /usr/bin/caddy

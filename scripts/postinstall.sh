@@ -7,13 +7,30 @@ if ! getent group caddy > /dev/null 2>&1 ; then
 fi
 
 if ! getent passwd caddy > /dev/null 2>&1 ; then
+    # Create home directory first to avoid warning
+    mkdir -p /var/lib/caddy
     useradd --system \
         --gid caddy \
-        --create-home \
+        --no-create-home \
         --home-dir /var/lib/caddy \
         --shell /usr/sbin/nologin \
         --comment "Caddy web server" \
         caddy
+fi
+
+# Create default Caddyfile if it doesn't exist
+if [ ! -f /etc/caddy/Caddyfile ]; then
+    cat > /etc/caddy/Caddyfile << 'EOF'
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# https://caddyserver.com/docs/caddyfile
+#
+# The configuration below serves a welcome page over HTTP on port 80.
+
+:80 {
+    respond "Hello from Caddy!"
+}
+EOF
 fi
 
 # Set ownership
@@ -27,4 +44,4 @@ if [ -d /run/systemd/system ]; then
 fi
 
 echo "Caddy with custom plugins installed successfully!"
-echo "Verify plugins: caddy list-modules | grep -E '(cloudflare|redis|postgres|brotli)'"
+echo "Verify plugins: caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br)'"
