@@ -2,7 +2,7 @@
 
 [![Build and Release Custom Caddy Web Server](https://github.com/crazyuploader/caddy/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/crazyuploader/caddy/actions/workflows/build-and-release.yml)
 
-Custom Caddy web server build with additional plugins, packaged as a `.deb` for easy installation via APT.
+Custom [Caddy Web Server](https://github.com/caddyserver/caddy) build with additional plugins, packaged as a `.deb` for easy installation via APT.
 
 ## Included Plugins
 
