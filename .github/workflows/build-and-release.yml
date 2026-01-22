@@ -1,0 +1,151 @@
+name: Build and Release Custom Caddy
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      caddy_version:
+        description: "Caddy version to build"
+        required: false
+        default: "latest"
+
+env:
+  CADDY_VERSION: ${{ github.event.inputs.caddy_version || 'latest' }}
+
+jobs:
+  build:
+    name: Build ${{ matrix.arch }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            goarch: amd64
+            platform: linux/amd64
+          - arch: arm64
+            goarch: arm64
+            platform: linux/arm64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Install xcaddy
+        run: go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+
+      - name: Install nfpm
+        run: |
+          echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
+          sudo apt update
+          sudo apt install nfpm
+
+      - name: Build Caddy with plugins
+        env:
+          GOOS: linux
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: 0
+        run: |
+          ~/go/bin/xcaddy build ${CADDY_VERSION} \
+            --output ./caddy \
+            --with github.com/caddy-dns/cloudflare \
+            --with github.com/pberkel/caddy-storage-redis \
+            --with github.com/yroc92/postgres-storage \
+            --with github.com/mentimeter/caddy-storage-cf-kv \
+            --with github.com/ueffel/caddy-brotli
+
+          chmod +x ./caddy
+          ./caddy version
+
+      - name: Get version
+        id: get_version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(./caddy version | head -n1 | awk '{print $1}')
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Building version: ${VERSION}"
+
+      - name: Create .deb package
+        env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
+          ARCH: ${{ matrix.arch }}
+        run: |
+          nfpm pkg --packager deb --target ./
+          ls -lh *.deb
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: caddy-${{ matrix.arch }}.deb
+          path: "*.deb"
+          retention-days: 5
+
+  publish-apt-repo:
+    name: Publish APT Repository
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./debs
+
+      - name: List downloaded packages
+        run: |
+          ls -lhR ./debs/
+          mkdir -p ./packages
+          find ./debs -name "*.deb" -exec mv {} ./packages/ \;
+          ls -lh ./packages/
+
+      - name: Setup GPG
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+          echo "${{ secrets.GPG_PUBLIC_KEY }}" > public.key
+
+      - name: Create APT repository
+        uses: smeinecke/apt-repo-action@v2.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_supported_arch: |
+            amd64
+            arm64
+          repo_supported_version: |
+            stable
+          file: ./packages/*.deb
+          file_target_version: stable
+          public_key: ${{ secrets.GPG_PUBLIC_KEY }}
+          private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          key_passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          page_branch: gh-pages
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ./packages/*.deb
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

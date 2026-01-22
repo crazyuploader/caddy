@@ -1,0 +1,58 @@
+name: "caddy"
+arch: "${ARCH}"
+platform: "linux"
+version: "${VERSION}"
+section: "web"
+priority: "optional"
+maintainer: "Jugal Kishore"
+description: |
+  Caddy Web Server
+  Includes: cloudflare-dns, redis-storage, postgres-storage, cf-kv-storage, brotli
+vendor: "Custom Build"
+homepage: "https://github.com/crazyuploader/caddy"
+license: "MIT"
+
+contents:
+  - src: ./caddy
+    dst: /usr/bin/caddy
+    file_info:
+      mode: 0755
+  
+  - src: ./systemd/caddy.service
+    dst: /usr/lib/systemd/system/caddy.service
+    file_info:
+      mode: 0644
+  
+  - dst: /etc/caddy
+    type: dir
+    file_info:
+      mode: 0755
+  
+  - dst: /var/lib/caddy
+    type: dir
+    file_info:
+      mode: 0755
+
+scripts:
+  postinstall: |
+    # Create caddy user and group if they don't exist
+    if ! id -u caddy > /dev/null 2>&1; then
+      useradd --system --home /var/lib/caddy --shell /usr/sbin/nologin caddy
+    fi
+    
+    # Set ownership
+    chown -R caddy:caddy /etc/caddy /var/lib/caddy
+    
+    # Reload systemd
+    systemctl daemon-reload || true
+    
+    # Enable service
+    if [ -d /run/systemd/system ]; then
+      systemctl enable caddy || true
+    fi
+  
+  preremove: |
+    if [ -d /run/systemd/system ]; then
+      systemctl --no-reload disable caddy || true
+      systemctl stop caddy || true
+    fi
