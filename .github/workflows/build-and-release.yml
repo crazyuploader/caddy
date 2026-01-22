@@ -230,13 +230,13 @@ jobs:
 
           rm -f /tmp/gpg-pass
 
-          mkdir -p public
-          cp -r ~/.aptly/public/* public/
-          gpg --armor --export ${{ secrets.GPG_KEY_ID }} > public/public.key
-          cp ./scripts/migrate.sh public/migrate.sh
-          cp ./public/index.html public/index.html
+          mkdir -p dist
+          cp -r ~/.aptly/public/* dist/
+          gpg --armor --export ${{ secrets.GPG_KEY_ID }} > dist/public.key
+          cp ./scripts/migrate.sh dist/migrate.sh
+          cp ./public/index.html dist/index.html
 
-          cat > public/README.md << 'EOF'
+          cat > dist/README.md << 'EOF'
           # Custom Caddy APT Repository
 
           ## Quick Install
@@ -268,7 +268,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./dist
           publish_branch: cf-pages
           force_orphan: true
 
