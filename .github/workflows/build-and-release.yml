@@ -126,7 +126,7 @@ jobs:
           echo "${{ secrets.GPG_PUBLIC_KEY }}" > public.key
 
       - name: Create APT repository
-        uses: smeinecke/apt-repo-action@v2.1.1
+        uses: smeinecke/apt-repo-action@v2.1.6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repo_supported_arch: |
