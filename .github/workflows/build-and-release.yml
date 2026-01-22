@@ -126,7 +126,7 @@ jobs:
           dpkg-deb --contents "$NEW_NAME"
       
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: caddy-${{ matrix.arch }}-deb
           path: "caddy_*.deb"
@@ -146,7 +146,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: ./debs
       
