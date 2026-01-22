@@ -234,22 +234,23 @@ jobs:
           cp -r ~/.aptly/public/* public/
           gpg --armor --export ${{ secrets.GPG_KEY_ID }} > public/public.key
           cp ./scripts/migrate.sh public/migrate.sh
+          cp ./public/index.html public/index.html
 
           cat > public/README.md << 'EOF'
           # Custom Caddy APT Repository
 
-          ## Installation
+          ## Quick Install
 
           ```bash
-          # Add GPG key
           curl -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
-
-          # Add repository
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+          sudo apt update && sudo apt install caddy
+          ```
 
-          # Install
-          sudo apt update
-          sudo apt install caddy
+          ## Migrate from Official Caddy
+
+          ```bash
+          curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo bash
           ```
 
           ## Included Plugins
@@ -259,6 +260,8 @@ jobs:
           - caddy.storage.postgres
           - caddy.storage.cloudflare_kv
           - http.encoders.br
+
+          [View Documentation](https://caddy.devjugal.com)
           EOF
 
       - name: Push to cf-pages branch

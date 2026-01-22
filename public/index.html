@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caddy - Custom Build with Plugins</title>
+    <meta name="description" content="Custom Caddy web server build with Cloudflare DNS, Redis, PostgreSQL storage, and Brotli compression plugins.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-card: #18181b;
+            --border: #27272a;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --accent: #22d3ee;
+            --accent-glow: rgba(34, 211, 238, 0.15);
+            --green: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Modern minimal scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), #06b6d4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .github-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .github-link:hover {
+            color: var(--text-primary);
+        }
+
+        .github-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-glow);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* Plugins Grid */
+        .plugins {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .plugins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .plugin-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .plugin-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .plugin-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plugin-card h3 span {
+            font-size: 1.1rem;
+        }
+
+        .plugin-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .plugin-card a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 12px;
+        }
+
+        .plugin-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Install Section */
+        .install {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .code-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .code-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .copy-btn:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .code-content {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .code-content .comment {
+            color: #6b7280;
+        }
+
+        .code-content .command {
+            color: var(--accent);
+        }
+
+        /* Migrate Section */
+        .migrate {
+            margin-top: 32px;
+        }
+
+        .migrate-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .migrate-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .migrate-badge {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: var(--green);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .migrate p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+        }
+
+        .oneliner {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.875rem;
+            color: var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .oneliner code {
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .hero {
+                padding: 60px 0 40px;
+            }
+            .plugins, .install {
+                padding: 40px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span>Caddy</span>
+            </div>
+            <a href="https://github.com/crazyuploader/caddy" class="github-link" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    APT Repository Available
+                </div>
+                <h1>Custom Caddy Build</h1>
+                <p>Pre-built Caddy web server with essential plugins for DNS challenges, distributed storage, and compression. Ready to install via APT.</p>
+            </div>
+        </section>
+
+        <section class="plugins">
+            <div class="container">
+                <h2 class="section-title">Included Plugins</h2>
+                <div class="plugins-grid">
+                    <div class="plugin-card">
+                        <h3><span>☁️</span> Cloudflare DNS</h3>
+                        <p>ACME DNS challenge provider for wildcard certificates without exposing ports.</p>
+                        <a href="https://github.com/caddy-dns/cloudflare" target="_blank" rel="noopener">View on GitHub →</a>
+                    </div>
+                    <div class="plugin-card">
+                        <h3><span>🔴</span> Redis Storage</h3>
+                        <p>Store certificates in Redis for multi-instance deployments.</p>
+                        <a href="https://github.com/pberkel/caddy-storage-redis" target="_blank" rel="noopener">View on GitHub →</a>
+                    </div>
+                    <div class="plugin-card">
+                        <h3><span>🐘</span> PostgreSQL Storage</h3>
+                        <p>Certificate storage backend using PostgreSQL database.</p>
+                        <a href="https://github.com/yroc92/postgres-storage" target="_blank" rel="noopener">View on GitHub →</a>
+                    </div>
+                    <div class="plugin-card">
+                        <h3><span>🌐</span> Cloudflare KV</h3>
+                        <p>Use Cloudflare Workers KV for edge certificate storage.</p>
+                        <a href="https://github.com/mentimeter/caddy-storage-cf-kv" target="_blank" rel="noopener">View on GitHub →</a>
+                    </div>
+                    <div class="plugin-card">
+                        <h3><span>📦</span> Brotli</h3>
+                        <p>Brotli compression encoder for better performance than gzip.</p>
+                        <a href="https://github.com/ueffel/caddy-brotli" target="_blank" rel="noopener">View on GitHub →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="install">
+            <div class="container">
+                <h2 class="section-title">Installation</h2>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-title">Terminal</span>
+                        <button class="copy-btn" onclick="copyCode()">Copy</button>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="comment"># Add GPG key</span>
+<span class="command">curl</span> -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+
+<span class="comment"># Add repository</span>
+<span class="command">echo</span> "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+
+<span class="comment"># Install</span>
+sudo apt update && sudo apt install caddy</pre>
+                    </div>
+                </div>
+
+                <div class="migrate">
+                    <div class="migrate-header">
+                        <h3>Migrating from Official Caddy?</h3>
+                        <span class="migrate-badge">One-liner</span>
+                    </div>
+                    <p>This will backup your configs, disable the official repo, and install the custom build.</p>
+                    <div class="oneliner">
+                        <code>curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo bash</code>
+                        <button class="copy-btn" onclick="copyMigrate()">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Built by <i><a href="https://github.com/crazyuploader" target="_blank" rel="noopener">crazyuploader</a></i> · <i><a href="https://github.com/crazyuploader/caddy" target="_blank" rel="noopener">View Source</a></i></p>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode() {
+            const code = `curl -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+sudo apt update && sudo apt install caddy`;
+            navigator.clipboard.writeText(code);
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = 'Copy', 2000);
+        }
+
+        function copyMigrate() {
+            navigator.clipboard.writeText('curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo bash');
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = 'Copy', 2000);
+        }
+    </script>
+</body>
+</html>
