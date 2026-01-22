@@ -20,39 +20,39 @@ contents:
     dst: /usr/bin/caddy
     file_info:
       mode: 0755
-  
+
   - src: ./systemd/caddy.service
     dst: /lib/systemd/system/caddy.service
     file_info:
       mode: 0644
-  
+
   - src: ./systemd/caddy-api.service
     dst: /lib/systemd/system/caddy-api.service
     file_info:
       mode: 0644
-  
+
   # Bash completion
   - src: ./caddy-dist/scripts/bash-completion
     dst: /etc/bash_completion.d/caddy
     file_info:
       mode: 0644
-  
+
   # Man pages
   - src: ./caddy-dist/man/*
     dst: /usr/share/man/man8/
-  
+
   # Config directory
   - dst: /etc/caddy
     type: dir
     file_info:
       mode: 0755
-  
+
   # Data directory
   - dst: /var/lib/caddy
     type: dir
     file_info:
       mode: 0755
-  
+
   # Default welcome page (optional)
   - dst: /usr/share/caddy
     type: dir

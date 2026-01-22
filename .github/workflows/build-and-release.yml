@@ -3,13 +3,13 @@ name: Build and Release Custom Caddy Web Server
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
     inputs:
       caddy_version:
-        description: 'Caddy version to build (e.g., v2.8.4 or latest)'
+        description: "Caddy version to build (e.g., v2.8.4 or latest)"
         required: false
-        default: 'latest'
+        default: "latest"
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    
+
     strategy:
       matrix:
         include:
@@ -29,19 +29,19 @@ jobs:
             goarch: amd64
           - arch: arm64
             goarch: arm64
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      
+
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: '~1.25.6'
+          go-version: "~1.25.6"
           check-latest: true
-      
+
       - name: Get version info
         id: vars
         run: |
@@ -58,22 +58,25 @@ jobs:
               VERSION="${TAG#v}"
             fi
           fi
-          
+
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
           echo "TAG=${TAG}" >> $GITHUB_OUTPUT
           echo "Building Caddy ${TAG} for ${{ matrix.arch }}"
-      
+
       - name: Install xcaddy
         run: |
           go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
           xcaddy version
-      
+
       - name: Install nfpm
         run: |
-          echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
+          # Download and install goreleaser APT repository GPG key
+          curl -SsL https://repo.goreleaser.com/apt/pubkey.gpg | sudo gpg --dearmor -o /usr/share/keyrings/goreleaser-archive-keyring.gpg
+          # Add goreleaser APT repository with GPG signature verification
+          echo "deb [signed-by=/usr/share/keyrings/goreleaser-archive-keyring.gpg] https://repo.goreleaser.com/apt/ /" | sudo tee /etc/apt/sources.list.d/goreleaser.list
           sudo apt update
           sudo apt install -y nfpm
-      
+
       - name: Build Caddy with custom plugins
         env:
           GOOS: linux
@@ -81,7 +84,7 @@ jobs:
           CGO_ENABLED: 0
         run: |
           mkdir -p caddy-build
-          
+
           xcaddy build ${{ steps.vars.outputs.TAG }} \
             --output ./caddy-build/caddy \
             --with github.com/caddy-dns/cloudflare \
@@ -89,42 +92,54 @@ jobs:
             --with github.com/yroc92/postgres-storage \
             --with github.com/mentimeter/caddy-storage-cf-kv \
             --with github.com/ueffel/caddy-brotli
-          
+
           chmod +x ./caddy-build/caddy
-          ./caddy-build/caddy version
-          ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|http.encoders.brotli)'
-      
+
+      - name: Verify binary
+        run: |
+          if [ "${{ matrix.goarch }}" = "amd64" ]; then
+            # Native execution
+            ./caddy-build/caddy version
+            ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|http.encoders.brotli)'
+          else
+            # Use QEMU for ARM64
+            sudo apt-get update
+            sudo apt-get install -y qemu-user-static
+            qemu-aarch64-static ./caddy-build/caddy version
+            qemu-aarch64-static ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|http.encoders.brotli)'
+          fi
+
       - name: Generate man pages and completions
         run: |
           mkdir -p caddy-dist/man caddy-dist/scripts
           ./caddy-build/caddy manpage --directory ./caddy-dist/man
           gzip -r ./caddy-dist/man/
           ./caddy-build/caddy completion bash > ./caddy-dist/scripts/bash-completion
-      
+
       - name: Create package files
         run: |
           # Create systemd directory
           mkdir -p systemd
-          
+
           # Copy or create necessary files for packaging
           cp -r caddy-dist systemd ./caddy-build/
-      
+
       - name: Build .deb package
         env:
           VERSION: ${{ steps.vars.outputs.VERSION }}
           ARCH: ${{ matrix.arch }}
         run: |
           nfpm pkg --packager deb --target ./
-          
+
           # Rename to include architecture
           DEB_FILE=$(ls caddy_*.deb)
           NEW_NAME="caddy_${VERSION}_linux_${ARCH}.deb"
           mv "$DEB_FILE" "$NEW_NAME"
-          
+
           echo "Created: $NEW_NAME"
           dpkg-deb --info "$NEW_NAME"
           dpkg-deb --contents "$NEW_NAME"
-      
+
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
@@ -140,80 +155,80 @@ jobs:
       contents: write
       pages: write
       id-token: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
+
       - name: Download all artifacts
         uses: actions/download-artifact@v7
         with:
           path: ./debs
-      
+
       - name: Prepare packages
         run: |
           mkdir -p packages
           find ./debs -name "*.deb" -exec cp {} ./packages/ \;
           ls -lh ./packages/
-      
+
       - name: Setup GPG
         run: |
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
           gpg --list-secret-keys
-      
+
       - name: Create APT repository with aptly
         run: |
           # Install aptly
           sudo apt-get update
           sudo apt-get install -y aptly
-          
+
           # Initialize aptly database
           aptly repo create -distribution=stable -component=main caddy-custom
-          
+
           # Add all .deb packages
           aptly repo add caddy-custom ./packages/*.deb
-          
+
           # Publish repository
           aptly publish repo \
             -architectures="amd64,arm64" \
             -gpg-key="${{ secrets.GPG_KEY_ID }}" \
             -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
             caddy-custom
-          
+
           # Copy published repo to deployment directory
           mkdir -p public
           cp -r ~/.aptly/public/* public/
-          
+
           # Export public key
           gpg --armor --export ${{ secrets.GPG_KEY_ID }} > public/public.key
-          
+
           # Create instructions file
           cat > public/README.md << 'EOF'
           # Custom Caddy APT Repository
-          
+
           ## Installation
-          
+
           ```bash
           # Add GPG key
           curl -fsSL https://yourusername.github.io/caddy-custom-builds/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
-          
+
           # Add repository
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://yourusername.github.io/caddy-custom-builds stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
-          
+
           # Install
           sudo apt update
           sudo apt install caddy
           ```
-          
+
           ## Included Plugins
-          
+
           - Cloudflare DNS (dns.providers.cloudflare)
           - Redis Storage (caddy.storage.redis)
           - PostgreSQL Storage (caddy.storage.postgres)
           - Cloudflare KV Storage (caddy.storage.cf-kv)
           - Brotli Compression (http.encoders.brotli)
           EOF
-      
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -221,7 +236,7 @@ jobs:
           publish_dir: ./public
           publish_branch: gh-pages
           force_orphan: true
-      
+
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -229,14 +244,14 @@ jobs:
           files: ./packages/*.deb
           body: |
             ## Custom Caddy Build
-            
+
             ### Included Plugins
             - Cloudflare DNS (`dns.providers.cloudflare`)
             - Redis Storage (`caddy.storage.redis`)
             - PostgreSQL Storage (`caddy.storage.postgres`)
             - Cloudflare KV Storage (`caddy.storage.cf-kv`)
             - Brotli Compression (`http.encoders.brotli`)
-            
+
             ### Installation via APT
             See [installation instructions](https://yourusername.github.io/caddy-custom-builds/)
           generate_release_notes: true
