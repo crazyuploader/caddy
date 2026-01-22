@@ -43,5 +43,4 @@ if [ -d /run/systemd/system ]; then
     systemctl enable caddy >/dev/null 2>&1 || true
 fi
 
-echo "Caddy with custom plugins installed successfully!"
-echo "Verify plugins: caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br)'"
+echo "Caddy with custom plugins [Cloudflare DNS, Redis Storage, PostgreSQL Storage, Cloudflare KV Storage, Brotli] installed successfully!"

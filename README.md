@@ -4,13 +4,13 @@
 
 ## Included Plugins
 
-| Plugin | Description |
-|--------|-------------|
-| [cloudflare-dns](https://github.com/caddy-dns/cloudflare) | DNS provider for Cloudflare (ACME DNS challenge) |
-| [redis-storage](https://github.com/pberkel/caddy-storage-redis) | Redis storage for certificates |
-| [postgres-storage](https://github.com/yroc92/postgres-storage) | PostgreSQL storage for certificates |
-| [cf-kv-storage](https://github.com/mentimeter/caddy-storage-cf-kv) | Cloudflare KV storage |
-| [brotli](https://github.com/ueffel/caddy-brotli) | Brotli compression encoder |
+| Plugin                                                             | Description                                      |
+| ------------------------------------------------------------------ | ------------------------------------------------ |
+| [cloudflare-dns](https://github.com/caddy-dns/cloudflare)          | DNS provider for Cloudflare (ACME DNS challenge) |
+| [redis-storage](https://github.com/pberkel/caddy-storage-redis)    | Redis storage for certificates                   |
+| [postgres-storage](https://github.com/yroc92/postgres-storage)     | PostgreSQL storage for certificates              |
+| [cf-kv-storage](https://github.com/mentimeter/caddy-storage-cf-kv) | Cloudflare KV storage                            |
+| [brotli](https://github.com/ueffel/caddy-brotli)                   | Brotli compression encoder                       |
 
 ## Installation
 
