@@ -179,32 +179,60 @@ jobs:
 
       - name: Setup GPG
         run: |
+          # Import the private key
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-          gpg --list-secret-keys
+          
+          # Configure GPG for non-interactive use
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          
+          # Restart GPG agent
+          gpg-connect-agent reloadagent /bye || true
+          
+          # List keys to verify
+          gpg --list-secret-keys --keyid-format=long
 
       - name: Create APT repository with aptly
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
           # Install aptly
           sudo apt-get update
           sudo apt-get install -y aptly
-
+          
+          # Create aptly config with GPG settings
+          cat > ~/.aptly.conf << EOF
+          {
+            "gpgProvider": "gpg",
+            "gpgDisableSign": false,
+            "gpgDisableVerify": false
+          }
+          EOF
+          
           # Initialize aptly database
           aptly repo create -distribution=stable -component=main caddy-custom
-
+          
           # Add all .deb packages
           aptly repo add caddy-custom ./packages/*.deb
-
-          # Publish repository
+          
+          # Create a passphrase file for signing
+          echo "$GPG_PASSPHRASE" > /tmp/gpg-pass
+          
+          # Publish repository with passphrase from file
           aptly publish repo \
+            -batch \
             -architectures="amd64,arm64" \
             -gpg-key="${{ secrets.GPG_KEY_ID }}" \
-            -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            -passphrase-file=/tmp/gpg-pass \
             caddy-custom
-
+          
+          # Clean up passphrase file
+          rm -f /tmp/gpg-pass
+          
           # Copy published repo to deployment directory
           mkdir -p public
           cp -r ~/.aptly/public/* public/
-
+          
           # Export public key
           gpg --armor --export ${{ secrets.GPG_KEY_ID }} > public/public.key
 
