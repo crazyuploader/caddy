@@ -27,22 +27,31 @@ jobs:
     steps:
       - name: Get latest Caddy version
         id: check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           # Get latest Caddy release version
           LATEST=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r .tag_name)
-          echo "Latest Caddy version: $LATEST"
+          echo "📦 Latest Caddy version: $LATEST"
 
           # Get our current published version
           CURRENT=$(curl -s https://caddy.devjugal.com/dists/stable/main/binary-amd64/Packages 2>/dev/null | grep -m1 "^Version:" | awk '{print $2}' || echo "none")
-          echo "Current published version: $CURRENT"
+          echo "📦 Current published version: $CURRENT"
 
           # Compare versions (strip 'v' prefix for comparison)
           LATEST_CLEAN=${LATEST#v}
           if [ "$CURRENT" = "none" ] || [ "$CURRENT" != "$LATEST_CLEAN" ]; then
-            echo "New version available, triggering build"
+            echo ""
+            echo "✅ New version available ($CURRENT → $LATEST_CLEAN)"
             echo "should_build=true" >> $GITHUB_OUTPUT
           else
-            echo "Already on latest version, skipping build"
+            echo ""
+            echo "ℹ️  Already on latest version ($CURRENT)"
+            if [ "$EVENT_NAME" = "schedule" ]; then
+              echo "⏭️  Scheduled run - skipping build"
+            else
+              echo "🔧 Manual/tag trigger - will build anyway"
+            fi
             echo "should_build=false" >> $GITHUB_OUTPUT
           fi
           echo "latest_version=$LATEST" >> $GITHUB_OUTPUT
