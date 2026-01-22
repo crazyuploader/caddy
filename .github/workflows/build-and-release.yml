@@ -1,98 +1,135 @@
-name: Build and Release Custom Caddy
+name: Build and Release Custom Caddy Web Server
 
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
   workflow_dispatch:
     inputs:
       caddy_version:
-        description: "Caddy version to build"
+        description: 'Caddy version to build (e.g., v2.8.4 or latest)'
         required: false
-        default: "latest"
+        default: 'latest'
 
-env:
-  CADDY_VERSION: ${{ github.event.inputs.caddy_version || 'latest' }}
+permissions:
+  contents: read
 
 jobs:
   build:
     name: Build ${{ matrix.arch }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    
     strategy:
       matrix:
         include:
           - arch: amd64
             goarch: amd64
-            platform: linux/amd64
           - arch: arm64
             goarch: arm64
-            platform: linux/arm64
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
+        with:
+          fetch-depth: 0
+      
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
-
+          go-version: '~1.25.6'
+          check-latest: true
+      
+      - name: Get version info
+        id: vars
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+            TAG=${GITHUB_REF#refs/tags/}
+          else
+            # Use input version or default to latest
+            if [ "${{ github.event.inputs.caddy_version }}" == "latest" ] || [ -z "${{ github.event.inputs.caddy_version }}" ]; then
+              TAG="latest"
+              VERSION="latest"
+            else
+              TAG="${{ github.event.inputs.caddy_version }}"
+              VERSION="${TAG#v}"
+            fi
+          fi
+          
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "TAG=${TAG}" >> $GITHUB_OUTPUT
+          echo "Building Caddy ${TAG} for ${{ matrix.arch }}"
+      
       - name: Install xcaddy
-        run: go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-
+        run: |
+          go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+          xcaddy version
+      
       - name: Install nfpm
         run: |
           echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
           sudo apt update
-          sudo apt install nfpm
-
-      - name: Build Caddy with plugins
+          sudo apt install -y nfpm
+      
+      - name: Build Caddy with custom plugins
         env:
           GOOS: linux
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: 0
         run: |
-          ~/go/bin/xcaddy build ${CADDY_VERSION} \
-            --output ./caddy \
+          mkdir -p caddy-build
+          
+          xcaddy build ${{ steps.vars.outputs.TAG }} \
+            --output ./caddy-build/caddy \
             --with github.com/caddy-dns/cloudflare \
             --with github.com/pberkel/caddy-storage-redis \
             --with github.com/yroc92/postgres-storage \
             --with github.com/mentimeter/caddy-storage-cf-kv \
             --with github.com/ueffel/caddy-brotli
-
-          chmod +x ./caddy
-          ./caddy version
-
-      - name: Get version
-        id: get_version
+          
+          chmod +x ./caddy-build/caddy
+          ./caddy-build/caddy version
+          ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|http.encoders.brotli)'
+      
+      - name: Generate man pages and completions
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
-          else
-            VERSION=$(./caddy version | head -n1 | awk '{print $1}')
-          fi
-          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
-          echo "Building version: ${VERSION}"
-
-      - name: Create .deb package
+          mkdir -p caddy-dist/man caddy-dist/scripts
+          ./caddy-build/caddy manpage --directory ./caddy-dist/man
+          gzip -r ./caddy-dist/man/
+          ./caddy-build/caddy completion bash > ./caddy-dist/scripts/bash-completion
+      
+      - name: Create package files
+        run: |
+          # Create systemd directory
+          mkdir -p systemd
+          
+          # Copy or create necessary files for packaging
+          cp -r caddy-dist systemd ./caddy-build/
+      
+      - name: Build .deb package
         env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
+          VERSION: ${{ steps.vars.outputs.VERSION }}
           ARCH: ${{ matrix.arch }}
         run: |
           nfpm pkg --packager deb --target ./
-          ls -lh *.deb
-
+          
+          # Rename to include architecture
+          DEB_FILE=$(ls caddy_*.deb)
+          NEW_NAME="caddy_${VERSION}_linux_${ARCH}.deb"
+          mv "$DEB_FILE" "$NEW_NAME"
+          
+          echo "Created: $NEW_NAME"
+          dpkg-deb --info "$NEW_NAME"
+          dpkg-deb --contents "$NEW_NAME"
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: caddy-${{ matrix.arch }}.deb
-          path: "*.deb"
+          name: caddy-${{ matrix.arch }}-deb
+          path: "caddy_*.deb"
           retention-days: 5
 
   publish-apt-repo:
@@ -103,49 +140,105 @@ jobs:
       contents: write
       pages: write
       id-token: write
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: ./debs
-
-      - name: List downloaded packages
+      
+      - name: Prepare packages
         run: |
-          ls -lhR ./debs/
-          mkdir -p ./packages
-          find ./debs -name "*.deb" -exec mv {} ./packages/ \;
+          mkdir -p packages
+          find ./debs -name "*.deb" -exec cp {} ./packages/ \;
           ls -lh ./packages/
-
+      
       - name: Setup GPG
         run: |
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-          echo "${{ secrets.GPG_PUBLIC_KEY }}" > public.key
-
-      - name: Create APT repository
-        uses: smeinecke/apt-repo-action@v2.1.1
+          gpg --list-secret-keys
+      
+      - name: Create APT repository with aptly
+        run: |
+          # Install aptly
+          sudo apt-get update
+          sudo apt-get install -y aptly
+          
+          # Initialize aptly database
+          aptly repo create -distribution=stable -component=main caddy-custom
+          
+          # Add all .deb packages
+          aptly repo add caddy-custom ./packages/*.deb
+          
+          # Publish repository
+          aptly publish repo \
+            -architectures="amd64,arm64" \
+            -gpg-key="${{ secrets.GPG_KEY_ID }}" \
+            -passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            caddy-custom
+          
+          # Copy published repo to deployment directory
+          mkdir -p public
+          cp -r ~/.aptly/public/* public/
+          
+          # Export public key
+          gpg --armor --export ${{ secrets.GPG_KEY_ID }} > public/public.key
+          
+          # Create instructions file
+          cat > public/README.md << 'EOF'
+          # Custom Caddy APT Repository
+          
+          ## Installation
+          
+          ```bash
+          # Add GPG key
+          curl -fsSL https://yourusername.github.io/caddy-custom-builds/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+          
+          # Add repository
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://yourusername.github.io/caddy-custom-builds stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+          
+          # Install
+          sudo apt update
+          sudo apt install caddy
+          ```
+          
+          ## Included Plugins
+          
+          - Cloudflare DNS (dns.providers.cloudflare)
+          - Redis Storage (caddy.storage.redis)
+          - PostgreSQL Storage (caddy.storage.postgres)
+          - Cloudflare KV Storage (caddy.storage.cf-kv)
+          - Brotli Compression (http.encoders.brotli)
+          EOF
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          repo_supported_arch: |
-            amd64
-            arm64
-          repo_supported_version: |
-            stable
-          file: ./packages/*.deb
-          file_target_version: stable
-          public_key: ${{ secrets.GPG_PUBLIC_KEY }}
-          private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          key_passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          page_branch: gh-pages
-
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
+      
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
         with:
           files: ./packages/*.deb
+          body: |
+            ## Custom Caddy Build
+            
+            ### Included Plugins
+            - Cloudflare DNS (`dns.providers.cloudflare`)
+            - Redis Storage (`caddy.storage.redis`)
+            - PostgreSQL Storage (`caddy.storage.postgres`)
+            - Cloudflare KV Storage (`caddy.storage.cf-kv`)
+            - Brotli Compression (`http.encoders.brotli`)
+            
+            ### Installation via APT
+            See [installation instructions](https://yourusername.github.io/caddy-custom-builds/)
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

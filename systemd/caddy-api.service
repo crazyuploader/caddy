@@ -1,0 +1,28 @@
+# caddy-api.service
+#
+# For using Caddy with the API.
+#
+# This unit does NOT explicitly load a Caddyfile.
+# 
+# See https://caddyserver.com/docs/install for instructions.
+
+[Unit]
+Description=Caddy (API mode)
+Documentation=https://caddyserver.com/docs/
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+Type=notify
+User=caddy
+Group=caddy
+ExecStart=/usr/bin/caddy run --environ --resume
+TimeoutStopSec=5s
+LimitNOFILE=1048576
+LimitNPROC=512
+PrivateTmp=true
+ProtectSystem=full
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
