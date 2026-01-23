@@ -8,7 +8,7 @@ require (
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
 	github.com/mholt/caddy-ratelimit v0.1.0
 	github.com/pberkel/caddy-storage-redis v1.5.0
-	github.com/ueffel/caddy-brotli v1.6.0
+	github.com/ueffel/caddy-brotli/v2 v2.0.0
 	github.com/ueffel/caddy-brotli/v2 v2.0.0
 	github.com/yroc92/postgres-storage v0.0.0-20230310195636-276797aefe40
 )
