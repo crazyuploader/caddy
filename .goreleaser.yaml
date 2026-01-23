@@ -78,12 +78,12 @@ nfpms:
     contents:
       # Config directory
       - dst: /etc/caddy
-        type: config|noreplace
+        type: dir
         file_info:
           mode: 0755
       # Data directory
       - dst: /var/lib/caddy
-        type: config|noreplace
+        type: dir
         file_info:
           mode: 0755
       - src: ./systemd/caddy.service
