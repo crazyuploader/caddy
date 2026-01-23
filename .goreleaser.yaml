@@ -12,14 +12,26 @@ builds:
       - CGO_ENABLED=0
     goos:
       - linux
+      - darwin
+      - windows
+      - freebsd
     goarch:
       - amd64
       - arm64
       - arm
     goarm:
       - "7"
+    ignore:
+      # ARM builds only for Linux
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm
+      - goos: freebsd
+        goarch: arm
     flags:
       - -trimpath
+      - -mod=readonly
     ldflags:
       - -s -w
       - -X 'github.com/caddyserver/caddy/v2.CustomVersion={{ .Version }}'
@@ -124,5 +136,18 @@ release:
     ### Installation via APT
     See [installation instructions](https://caddy.devjugal.com)
 
+signs:
+  - cmd: cosign
+    signature: "${artifact}.sig"
+    certificate: "${artifact}.pem"
+    args:
+      - "sign-blob"
+      - "--yes"
+      - "--output-signature=${signature}"
+      - "--output-certificate=${certificate}"
+      - "${artifact}"
+    artifacts: all
+
 checksum:
   name_template: "checksums.txt"
+  algorithm: sha512
