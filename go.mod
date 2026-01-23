@@ -9,6 +9,7 @@ require (
 	github.com/mholt/caddy-ratelimit v0.1.0
 	github.com/pberkel/caddy-storage-redis v1.5.0
 	github.com/ueffel/caddy-brotli v1.6.0
+	github.com/ueffel/caddy-brotli/v2 v2.0.0
 	github.com/yroc92/postgres-storage v0.0.0-20230310195636-276797aefe40
 )
 
