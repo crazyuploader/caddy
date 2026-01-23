@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "go.mod"
+  workflow_dispatch:
 
 jobs:
   tag-release:
