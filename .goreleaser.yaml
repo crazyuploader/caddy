@@ -34,7 +34,6 @@ builds:
       - -mod=readonly
     ldflags:
       - -s -w
-      - -X 'github.com/caddyserver/caddy/v2.CustomVersion={{ .Version }}'
 
 archives:
   - formats: [tar.gz]
