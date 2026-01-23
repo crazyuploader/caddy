@@ -90,6 +90,7 @@ dockers:
     use: buildx
     dockerfile: Dockerfile
     build_flag_templates:
+      - "--push"
       - "--platform=linux/amd64,linux/arm64,linux/arm/v7"
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
       - "--label=org.opencontainers.image.description=Caddy Web Server with custom plugins"
