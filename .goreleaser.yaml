@@ -113,6 +113,10 @@ nfpms:
       postinstall: ./scripts/postinstall.sh
       preremove: ./scripts/preremove.sh
       postremove: ./scripts/postremove.sh
+    mtime: "{{ .CommitDate }}"
+    deb:
+      fields:
+        Bugs: https://github.com/crazyuploader/caddy/issues
 
 dockers_v2:
   - images:
