@@ -81,23 +81,28 @@ nfpms:
     recommends:
       - systemd
 
-dockers:
-  - image_templates:
-      - "ghcr.io/crazyuploader/caddy:latest"
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}"
-      - "ghcr.io/crazyuploader/caddy:v{{ .Major }}"
-      - "ghcr.io/crazyuploader/caddy:v{{ .Major }}.{{ .Minor }}"
-    use: buildx
-    dockerfile: Dockerfile
-    build_flag_templates:
-      - "--push"
-      - "--platform=linux/amd64,linux/arm64,linux/arm/v7"
-      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
-      - "--label=org.opencontainers.image.description=Caddy Web Server with custom plugins"
-      - "--label=org.opencontainers.image.version={{ .Version }}"
-      - "--label=org.opencontainers.image.created={{ .Date }}"
-      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
-      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+dockers_v2:
+  - images:
+      - "ghcr.io/crazyuploader/caddy"
+    tags:
+      - "latest"
+      - "{{ .Version }}"
+      - "v{{ .Major }}"
+      - "v{{ .Major }}.{{ .Minor }}"
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - linux/arm/v7
+    # Disable during snapshot builds (CI) since manifest lists cannot be created without pushing
+    disable: "{{ .IsSnapshot }}"
+    labels:
+      "org.opencontainers.image.title": "{{ .ProjectName }}"
+      "org.opencontainers.image.description": "Caddy Web Server with custom plugins"
+      "org.opencontainers.image.version": "{{ .Version }}"
+      "org.opencontainers.image.created": "{{ .Date }}"
+      "org.opencontainers.image.revision": "{{ .FullCommit }}"
+      "org.opencontainers.image.source": "{{ .GitURL }}"
+      "org.opencontainers.image.licenses": "Apache-2.0"
 
 release:
   github:

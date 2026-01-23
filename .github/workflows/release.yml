@@ -34,6 +34,11 @@ jobs:
         with:
           driver: docker-container
 
+      - name: Setup buildx builder
+        run: |
+          docker buildx create --name=goreleaser --use
+          docker run --privileged --rm tonistiigi/binfmt --install all
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
