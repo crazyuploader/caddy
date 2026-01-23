@@ -7,7 +7,8 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - id: binary
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
@@ -24,11 +25,12 @@ builds:
       - -X 'github.com/caddyserver/caddy/v2.CustomVersion={{ .Version }}'
 
 archives:
-  - format: tar.gz
+  - formats: [ tar.gz ]
+    # Enable replacement of builds with ids (v2.8 change) although not explicitly using multiple builds here
     # use zip for windows archives
     format_overrides:
       - goos: windows
-        format: zip
+        formats: [ zip ]
     name_template: >-
       {{ .ProjectName }}_
       {{- .Version }}_
@@ -80,48 +82,21 @@ nfpms:
       - systemd
 
 dockers:
-  # AMD64
   - image_templates:
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-amd64"
+      - "ghcr.io/crazyuploader/caddy:latest"
+      - "ghcr.io/crazyuploader/caddy:{{ .Version }}"
+      - "ghcr.io/crazyuploader/caddy:v{{ .Major }}"
+      - "ghcr.io/crazyuploader/caddy:v{{ .Major }}.{{ .Minor }}"
     use: buildx
     dockerfile: Dockerfile
-    goos: linux
-    goarch: amd64
     build_flag_templates:
-      - "--platform=linux/amd64"
-
-  # ARM64
-  - image_templates:
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-arm64"
-    use: buildx
-    dockerfile: Dockerfile
-    goos: linux
-    goarch: arm64
-    build_flag_templates:
-      - "--platform=linux/arm64"
-
-  # ARMv7
-  - image_templates:
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-armv7"
-    use: buildx
-    dockerfile: Dockerfile
-    goos: linux
-    goarch: arm
-    goarm: 7
-    build_flag_templates:
-      - "--platform=linux/arm/v7"
-
-docker_manifests:
-  - name_template: "ghcr.io/crazyuploader/caddy:{{ .Version }}"
-    image_templates:
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-amd64"
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-arm64"
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-armv7"
-  - name_template: "ghcr.io/crazyuploader/caddy:latest"
-    image_templates:
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-amd64"
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-arm64"
-      - "ghcr.io/crazyuploader/caddy:{{ .Version }}-armv7"
+      - "--platform=linux/amd64,linux/arm64,linux/arm/v7"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.description=Caddy Web Server with custom plugins"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
 
 release:
   github:
