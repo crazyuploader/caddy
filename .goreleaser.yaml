@@ -25,12 +25,12 @@ builds:
       - -X 'github.com/caddyserver/caddy/v2.CustomVersion={{ .Version }}'
 
 archives:
-  - formats: [ tar.gz ]
+  - formats: [tar.gz]
     # Enable replacement of builds with ids (v2.8 change) although not explicitly using multiple builds here
     # use zip for windows archives
     format_overrides:
       - goos: windows
-        formats: [ zip ]
+        formats: [zip]
     name_template: >-
       {{ .ProjectName }}_
       {{- .Version }}_
