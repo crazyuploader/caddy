@@ -112,10 +112,15 @@ jobs:
           echo "TAG=${TAG}" >> $GITHUB_OUTPUT
           echo "Building Caddy ${TAG} for ${{ matrix.arch }}"
 
-      - name: Install xcaddy
-        run: |
-          go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-          xcaddy version
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
       - name: Install nfpm
         run: |
@@ -130,15 +135,7 @@ jobs:
           CGO_ENABLED: 0
         run: |
           mkdir -p caddy-build
-
-          xcaddy build ${{ steps.vars.outputs.TAG }} \
-            --output ./caddy-build/caddy \
-            --with github.com/caddy-dns/cloudflare \
-            --with github.com/pberkel/caddy-storage-redis \
-            --with github.com/yroc92/postgres-storage \
-            --with github.com/mentimeter/caddy-storage-cf-kv \
-            --with github.com/ueffel/caddy-brotli
-
+          go build -o ./caddy-build/caddy .
           chmod +x ./caddy-build/caddy
 
       - name: Get actual Caddy version
@@ -162,9 +159,9 @@ jobs:
       - name: List modules
         run: |
           if [ "${{ matrix.goarch }}" = "amd64" ]; then
-            ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br)'
+            ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit)'
           else
-            qemu-aarch64-static ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br)'
+            qemu-aarch64-static ./caddy-build/caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit)'
           fi
 
       - name: Generate man pages and completions
@@ -303,6 +300,7 @@ jobs:
           - caddy.storage.postgres
           - caddy.storage.cloudflare_kv
           - http.encoders.br
+          - http.handlers.rate_limit
 
           [View Documentation](https://caddy.devjugal.com)
           EOF
@@ -329,6 +327,7 @@ jobs:
             - caddy.storage.postgres
             - caddy.storage.cloudflare_kv
             - http.encoders.br
+            - http.handlers.rate_limit
 
             ### Installation via APT
             See [installation instructions](https://caddy.devjugal.com)

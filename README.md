@@ -13,6 +13,7 @@ Custom [Caddy Web Server](https://github.com/caddyserver/caddy) build with addit
 | [postgres-storage](https://github.com/yroc92/postgres-storage)     | PostgreSQL storage for certificates              |
 | [cf-kv-storage](https://github.com/mentimeter/caddy-storage-cf-kv) | Cloudflare KV storage                            |
 | [brotli](https://github.com/ueffel/caddy-brotli)                   | Brotli compression encoder                       |
+| [rate-limit](https://github.com/mholt/caddy-ratelimit)             | HTTP rate limiting                               |
 
 ## Installation
 
@@ -90,7 +91,7 @@ sudo nano /etc/caddy/Caddyfile
 ### Verify Plugins
 
 ```bash
-caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br)'
+caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit)'
 ```
 
 ## License

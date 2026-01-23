@@ -7,7 +7,7 @@ priority: "optional"
 maintainer: "Jugal Kishore"
 description: |
   Caddy Web Server with custom plugins.
-  Includes: cloudflare-dns, redis-storage, postgres-storage, cf-kv-storage, brotli
+  Includes: cloudflare-dns, redis-storage, postgres-storage, cf-kv-storage, brotli, rate-limit
 vendor: "Custom Build"
 homepage: "https://github.com/crazyuploader/caddy"
 license: "MIT"
