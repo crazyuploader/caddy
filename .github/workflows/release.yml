@@ -1,6 +1,8 @@
 name: Release Custom Caddy
 
 on:
+  schedule:
+    - cron: "0 2 * * *"
   push:
     tags:
       - "v*"
@@ -13,7 +15,51 @@ permissions:
   id-token: write
 
 jobs:
+  check-version:
+    name: Check if version exists
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.check.outputs.should_build }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - name: Get version from tag
+        id: check
+        run: |
+          # Get version from tag or ref
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION="${{ github.ref_name }}"
+          else
+            # For workflow_dispatch, get latest tag
+            VERSION=$(curl -s https://api.github.com/repos/${{ github.repository }}/tags | jq -r '.[0].name // "v0.0.0"')
+          fi
+          VERSION_CLEAN=${VERSION#v}
+          echo "📦 Version to build: $VERSION_CLEAN"
+          echo "version=$VERSION_CLEAN" >> $GITHUB_OUTPUT
+
+          # Check if this version already exists in our APT repo
+          CURRENT=$(curl -s https://caddy.devjugal.com/dists/stable/main/binary-amd64/Packages 2>/dev/null | grep -m1 "^Version:" | awk '{print $2}' || echo "none")
+          echo "📦 Current published version: $CURRENT"
+
+          if [ "$CURRENT" = "$VERSION_CLEAN" ]; then
+            echo ""
+            echo "⚠️  Version $VERSION_CLEAN already published"
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              echo "🔧 Manual trigger - will rebuild anyway"
+              echo "should_build=true" >> $GITHUB_OUTPUT
+            else
+              echo "⏭️  Skipping build"
+              echo "should_build=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo ""
+            echo "✅ New version ($CURRENT → $VERSION_CLEAN)"
+            echo "should_build=true" >> $GITHUB_OUTPUT
+          fi
+
   goreleaser:
+    name: Build and Release
+    needs: check-version
+    if: needs.check-version.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
