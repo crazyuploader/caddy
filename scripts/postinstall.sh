@@ -65,10 +65,11 @@ Pin-Priority: 1001
 EOF
 fi
 
-# Reload and enable systemd service
+# Reload, enable and start systemd service
 if [ -d /run/systemd/system ]; then
 	systemctl daemon-reload >/dev/null 2>&1 || true
 	systemctl enable caddy >/dev/null 2>&1 || true
+	systemctl start caddy >/dev/null 2>&1 || true
 fi
 
 # For Alpine with OpenRC
