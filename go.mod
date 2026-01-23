@@ -9,7 +9,6 @@ require (
 	github.com/mholt/caddy-ratelimit v0.1.0
 	github.com/pberkel/caddy-storage-redis v1.5.0
 	github.com/ueffel/caddy-brotli v1.6.0
-	github.com/ueffel/caddy-brotli/v2 v2.0.0
 	github.com/yroc92/postgres-storage v0.0.0-20230310195636-276797aefe40
 )
 
@@ -52,7 +51,6 @@ require (
 	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/francoispqt/gojay v1.2.13 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/go-chi/chi/v5 v5.2.3 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.4 // indirect
@@ -99,8 +97,8 @@ require (
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.66.1 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
-	github.com/quic-go/qpack v0.5.1 // indirect
-	github.com/quic-go/quic-go v0.54.0 // indirect
+	github.com/quic-go/qpack v0.6.0 // indirect
+	github.com/quic-go/quic-go v0.57.0 // indirect
 	github.com/redis/go-redis/v9 v9.3.0 // indirect
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
@@ -147,7 +145,6 @@ require (
 	go.opentelemetry.io/proto/otlp v1.7.0 // indirect
 	go.step.sm/crypto v0.74.0 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
-	go.uber.org/mock v0.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.uber.org/zap/exp v0.3.0 // indirect
