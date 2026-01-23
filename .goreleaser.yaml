@@ -74,6 +74,8 @@ nfpms:
       - caddy
     formats:
       - deb
+      - rpm
+      - apk
     bindir: /usr/bin
     contents:
       # Config directory
@@ -117,6 +119,13 @@ nfpms:
     deb:
       fields:
         Bugs: https://github.com/crazyuploader/caddy/issues
+    rpm:
+      group: System Environment/Daemons
+      summary: Caddy Web Server with custom plugins
+    apk:
+      scripts:
+        preupgrade: ./scripts/preinstall.sh
+        postupgrade: ./scripts/postinstall.sh
 
 dockers_v2:
   - images:

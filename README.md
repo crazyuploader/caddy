@@ -3,7 +3,7 @@
 [![Release Custom Caddy](https://github.com/crazyuploader/caddy/actions/workflows/release.yml/badge.svg)](https://github.com/crazyuploader/caddy/actions/workflows/release.yml)
 [![CI](https://github.com/crazyuploader/caddy/actions/workflows/ci.yml/badge.svg)](https://github.com/crazyuploader/caddy/actions/workflows/ci.yml)
 
-Custom [Caddy Web Server](https://github.com/caddyserver/caddy) build with additional plugins, packaged as a `.deb` for easy installation via APT.
+Custom [Caddy Web Server](https://github.com/caddyserver/caddy) build with additional plugins, available as `.deb`, `.rpm`, `.apk` packages and pre-built binaries.
 
 ## Included Plugins
 
@@ -62,6 +62,43 @@ sudo apt install caddy
 ```
 
 </details>
+
+### RPM (Fedora/RHEL/CentOS)
+
+Download the latest `.rpm` from [GitHub Releases](https://github.com/crazyuploader/caddy/releases):
+
+```bash
+# Install directly from URL (replace version as needed)
+sudo rpm -i https://github.com/crazyuploader/caddy/releases/latest/download/caddy_VERSION_linux_amd64.rpm
+
+# Or download first
+wget https://github.com/crazyuploader/caddy/releases/latest/download/caddy_VERSION_linux_amd64.rpm
+sudo rpm -i caddy_VERSION_linux_amd64.rpm
+```
+
+### Alpine Linux
+
+Download the latest `.apk` from [GitHub Releases](https://github.com/crazyuploader/caddy/releases):
+
+```bash
+# Download and install (replace version as needed)
+wget https://github.com/crazyuploader/caddy/releases/latest/download/caddy_VERSION_linux_amd64.apk
+sudo apk add --allow-untrusted caddy_VERSION_linux_amd64.apk
+```
+
+### Binary (Any Linux/macOS/Windows)
+
+Download pre-built binaries from [GitHub Releases](https://github.com/crazyuploader/caddy/releases):
+
+| Platform | Architecture  | File                                 |
+| -------- | ------------- | ------------------------------------ |
+| Linux    | amd64         | `caddy_VERSION_linux_amd64.tar.gz`   |
+| Linux    | arm64         | `caddy_VERSION_linux_arm64.tar.gz`   |
+| Linux    | armv7         | `caddy_VERSION_linux_armv7.tar.gz`   |
+| macOS    | amd64         | `caddy_VERSION_darwin_amd64.tar.gz`  |
+| macOS    | arm64 (M1/M2) | `caddy_VERSION_darwin_arm64.tar.gz`  |
+| Windows  | amd64         | `caddy_VERSION_windows_amd64.zip`    |
+| FreeBSD  | amd64         | `caddy_VERSION_freebsd_amd64.tar.gz` |
 
 ## Usage
 
