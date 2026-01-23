@@ -1,0 +1,138 @@
+name: Release Custom Caddy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  packages: write
+  pages: write
+  id-token: write
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "~1.23"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare APT Packages
+        run: |
+          mkdir -p packages
+          find dist -name "*.deb" -exec cp {} packages/ \;
+          ls -lh packages/
+
+      - name: Setup GPG
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+
+          mkdir -p ~/.gnupg
+          chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+
+          gpg-connect-agent reloadagent /bye || true
+          gpg --list-secret-keys --keyid-format=long
+
+      - name: Create APT repository with aptly
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y aptly
+
+          cat > ~/.aptly.conf << EOF
+          {
+            "gpgProvider": "gpg",
+            "gpgDisableSign": false,
+            "gpgDisableVerify": false
+          }
+          EOF
+
+          aptly repo create -distribution=stable -component=main caddy-custom
+          aptly repo add caddy-custom ./packages/*.deb
+
+          echo "$GPG_PASSPHRASE" > /tmp/gpg-pass
+
+          aptly publish repo \
+            -batch \
+            -architectures="amd64,arm64,arm32,armhf" \
+            -gpg-key="${{ secrets.GPG_KEY_ID }}" \
+            -passphrase-file=/tmp/gpg-pass \
+            caddy-custom
+
+          rm -f /tmp/gpg-pass
+
+          mkdir -p dist-repo
+          cp -r ~/.aptly/public/* dist-repo/
+          gpg --armor --export ${{ secrets.GPG_KEY_ID }} > dist-repo/public.key
+          cp ./scripts/migrate.sh dist-repo/migrate.sh
+          cp ./public/index.html dist-repo/index.html
+
+          cat > dist-repo/README.md << 'EOF'
+          # Custom Caddy APT Repository
+
+          ## Quick Install
+
+          ```bash
+          curl -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+          sudo apt update && sudo apt install caddy
+          ```
+
+          ## Migrate from Official Caddy
+
+          ```bash
+          curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo bash
+          ```
+
+          ## Included Plugins
+
+          - dns.providers.cloudflare
+          - caddy.storage.redis
+          - caddy.storage.postgres
+          - caddy.storage.cloudflare_kv
+          - http.encoders.br
+          - http.handlers.rate_limit
+
+          [View Documentation](https://caddy.devjugal.com)
+          EOF
+
+      - name: Push to cf-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist-repo
+          publish_branch: cf-pages
+          force_orphan: true
