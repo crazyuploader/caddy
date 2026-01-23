@@ -66,6 +66,12 @@ nfpms:
       Caddy Web Server with custom plugins.
       Includes: cloudflare-dns, redis-storage, postgres-storage, cf-kv-storage, brotli, rate-limit
     license: "MIT"
+    section: web
+    priority: optional
+    provides:
+      - httpd
+    replaces:
+      - caddy
     formats:
       - deb
     bindir: /usr/bin
@@ -102,6 +108,11 @@ nfpms:
       - ca-certificates
     recommends:
       - systemd
+    scripts:
+      preinstall: ./scripts/preinstall.sh
+      postinstall: ./scripts/postinstall.sh
+      preremove: ./scripts/preremove.sh
+      postremove: ./scripts/postremove.sh
 
 dockers_v2:
   - images:
