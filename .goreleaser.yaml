@@ -70,6 +70,16 @@ nfpms:
       - deb
     bindir: /usr/bin
     contents:
+      # Config directory
+      - dst: /etc/caddy
+        type: config|noreplace
+        file_info:
+          mode: 0755
+      # Data directory
+      - dst: /var/lib/caddy
+        type: config|noreplace
+        file_info:
+          mode: 0755
       - src: ./systemd/caddy.service
         dst: /lib/systemd/system/caddy.service
         file_info:
