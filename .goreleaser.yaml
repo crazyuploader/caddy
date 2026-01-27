@@ -99,12 +99,6 @@ nfpms:
           mode: 0644
           owner: root
           group: root
-      - src: ./public/index.html
-        dst: /usr/share/caddy/index.html
-        file_info:
-          mode: 0644
-          owner: root
-          group: root
     dependencies:
       - ca-certificates
     recommends:
