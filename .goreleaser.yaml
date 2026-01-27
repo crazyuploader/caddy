@@ -87,6 +87,11 @@ nfpms:
         type: dir
         file_info:
           mode: 0755
+      # Webbroot directory
+      - dst: /usr/share/caddy
+        type: dir
+        file_info:
+          mode: 0755
       - src: ./systemd/caddy.service
         dst: /lib/systemd/system/caddy.service
         file_info:
