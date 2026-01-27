@@ -155,7 +155,13 @@ jobs:
           cp -r ~/.aptly/public/* dist-repo/
           gpg --armor --export ${{ secrets.GPG_KEY_ID }} > dist-repo/public.key
           cp ./scripts/migrate.sh dist-repo/migrate.sh
+
+          # Generate build metadata
+          chmod +x ./scripts/generate_metadata.sh
+          ./scripts/generate_metadata.sh ${{ needs.check-version.outputs.version }}
+
           cp ./public/index.html dist-repo/index.html
+          cp ./public/build-metadata.json dist-repo/build-metadata.json
 
           cat > dist-repo/README.md << 'EOF'
           # Custom Caddy APT Repository

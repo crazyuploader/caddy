@@ -6,7 +6,7 @@
     <title>Caddy - Custom Build with Plugins</title>
     <meta
       name="description"
-      content="Custom Caddy web server build with Cloudflare DNS, Redis, PostgreSQL storage, and Brotli compression plugins."
+      content="Custom Caddy web server build with essential plugins for modern deployments."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,6 +25,7 @@
         --accent: #22d3ee;
         --accent-glow: rgba(34, 211, 238, 0.15);
         --green: #22c55e;
+        --orange: #f59e0b;
       }
 
       * {
@@ -45,7 +46,6 @@
         min-height: 100vh;
       }
 
-      /* Modern minimal scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -64,7 +64,6 @@
         background: var(--text-secondary);
       }
 
-      /* Firefox */
       * {
         scrollbar-width: thin;
         scrollbar-color: var(--border) transparent;
@@ -76,10 +75,14 @@
         padding: 0 24px;
       }
 
-      /* Header */
       header {
         padding: 24px 0;
         border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: rgba(10, 10, 11, 0.8);
+        backdrop-filter: blur(12px);
+        z-index: 100;
       }
 
       .header-content {
@@ -89,25 +92,17 @@
       }
 
       .logo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
         font-size: 1.25rem;
         font-weight: 600;
       }
 
-      .logo-icon {
-        width: 32px;
-        height: 32px;
-        background: linear-gradient(135deg, var(--accent), #06b6d4);
-        border-radius: 8px;
+      .header-links {
         display: flex;
+        gap: 16px;
         align-items: center;
-        justify-content: center;
-        font-size: 1rem;
       }
 
-      .github-link {
+      .header-link {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -117,16 +112,15 @@
         transition: color 0.2s;
       }
 
-      .github-link:hover {
+      .header-link:hover {
         color: var(--text-primary);
       }
 
-      .github-link svg {
+      .header-link svg {
         width: 20px;
         height: 20px;
       }
 
-      /* Hero */
       .hero {
         padding: 80px 0 60px;
         text-align: center;
@@ -186,9 +180,60 @@
         margin: 0 auto 32px;
       }
 
-      /* Plugins Grid */
-      .plugins {
+      .version-info {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+
+      .version-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+      }
+
+      .version-badge strong {
+        color: var(--accent);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 48px;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent);
+        display: block;
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-top: 4px;
+      }
+
+      .features {
         padding: 60px 0;
+        border-top: 1px solid var(--border);
       }
 
       .section-title {
@@ -198,6 +243,40 @@
         letter-spacing: 0.1em;
         color: var(--text-secondary);
         margin-bottom: 24px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+
+      .feature-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        display: block;
+      }
+
+      .feature-card h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .feature-card p {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+      }
+
+      .plugins {
+        padding: 60px 0;
       }
 
       .plugins-grid {
@@ -221,10 +300,16 @@
         transform: translateY(-2px);
       }
 
+      .plugin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 8px;
+      }
+
       .plugin-card h3 {
         font-size: 1rem;
         font-weight: 600;
-        margin-bottom: 6px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -234,9 +319,26 @@
         font-size: 1.1rem;
       }
 
+      .plugin-version {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        background: rgba(34, 211, 238, 0.15);
+        border: 1px solid rgba(34, 211, 238, 0.3);
+        color: var(--accent);
+      }
+
       .plugin-card p {
         font-size: 0.875rem;
         color: var(--text-secondary);
+        margin-bottom: 12px;
+      }
+
+      .plugin-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
       }
 
       .plugin-card a {
@@ -246,14 +348,12 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        margin-top: 12px;
       }
 
       .plugin-card a:hover {
         text-decoration: underline;
       }
 
-      /* Install Section */
       .install {
         padding: 60px 0;
         border-top: 1px solid var(--border);
@@ -264,6 +364,7 @@
         border: 1px solid var(--border);
         border-radius: 12px;
         overflow: hidden;
+        margin-bottom: 24px;
       }
 
       .code-header {
@@ -298,6 +399,12 @@
         color: var(--text-primary);
       }
 
+      .copy-btn.copied {
+        background: var(--green);
+        color: var(--bg-primary);
+        border-color: var(--green);
+      }
+
       .code-content {
         padding: 20px;
         overflow-x: auto;
@@ -318,7 +425,49 @@
         color: var(--accent);
       }
 
-      /* Migrate Section */
+      .code-content .string {
+        color: var(--green);
+      }
+
+      .requirements {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 24px;
+      }
+
+      .requirements h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .requirements ul {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+      }
+
+      .requirements li {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .requirements li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--green);
+        font-weight: bold;
+      }
+
       .migrate {
         margin-top: 32px;
       }
@@ -367,9 +516,117 @@
 
       .oneliner code {
         overflow-x: auto;
+        display: block;
       }
 
-      /* Footer */
+      .verification {
+        margin-top: 32px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .verification h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .verification-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .verification-step {
+        display: flex;
+        gap: 12px;
+      }
+
+      .step-number {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        background: var(--accent-glow);
+        border: 1px solid rgba(34, 211, 238, 0.3);
+        color: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .step-content h4 {
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .step-content p {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+      }
+
+      .step-content code {
+        background: var(--bg-secondary);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        color: var(--accent);
+        font-family: "SF Mono", "Fira Code", monospace;
+      }
+
+      .quickstart {
+        padding: 60px 0;
+        border-top: 1px solid var(--border);
+      }
+
+      .example-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+      }
+
+      .tab-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        padding: 12px 20px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+
+      .tab-btn:hover {
+        color: var(--text-primary);
+      }
+
+      .tab-btn.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
       footer {
         padding: 40px 0;
         border-top: 1px solid var(--border);
@@ -390,13 +647,48 @@
         text-decoration: underline;
       }
 
+      .loading {
+        text-align: center;
+        padding: 60px 0;
+        color: var(--text-secondary);
+      }
+
+      .error {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+        padding: 16px;
+        border-radius: 8px;
+        margin: 24px 0;
+        font-size: 0.875rem;
+      }
+
       @media (max-width: 640px) {
         .hero {
           padding: 60px 0 40px;
         }
+        .features,
         .plugins,
-        .install {
+        .install,
+        .quickstart {
           padding: 40px 0;
+        }
+        .stats {
+          grid-template-columns: 1fr;
+        }
+        .oneliner {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .header-links {
+          gap: 8px;
+        }
+        .header-link span {
+          display: none;
+        }
+        .version-info {
+          flex-direction: column;
+          align-items: center;
         }
       }
     </style>
@@ -404,22 +696,35 @@
   <body>
     <header>
       <div class="container header-content">
-        <div class="logo">
-          <span>Caddy</span>
+        <div class="logo">Caddy</div>
+        <div class="header-links">
+          <a href="#install" class="header-link">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"
+              />
+            </svg>
+            <span>Install</span>
+          </a>
+          <a
+            href="https://github.com/crazyuploader/caddy"
+            class="header-link"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+              />
+            </svg>
+            <span>GitHub</span>
+          </a>
         </div>
-        <a
-          href="https://github.com/crazyuploader/caddy"
-          class="github-link"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
-            />
-          </svg>
-          GitHub
-        </a>
       </div>
     </header>
 
@@ -428,97 +733,150 @@
         <div class="container">
           <div class="badge">
             <span class="badge-dot"></span>
-            APT Repository Available
+            Production Ready
           </div>
-          <h1>Custom Caddy Build</h1>
+          <h1>Caddy with Enterprise Plugins</h1>
           <p>
             Pre-built Caddy web server with essential plugins for DNS
-            challenges, distributed storage, and compression. Ready to install
-            via APT.
+            challenges, distributed storage, and high-performance compression.
+            Install in seconds via APT.
           </p>
+
+          <div class="version-info" id="version-info">
+            <div class="loading">Loading build information...</div>
+          </div>
+
+          <div class="stats">
+            <div class="stat-card">
+              <span class="stat-value" id="plugin-count">-</span>
+              <span class="stat-label">Plugins Included</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">100%</span>
+              <span class="stat-label">Open Source</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">Auto</span>
+              <span class="stat-label">HTTPS by Default</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="container">
+          <h2 class="section-title">Why Use This Build?</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <span class="feature-icon">🎯</span>
+              <h3>Production Optimized</h3>
+              <p>
+                Carefully selected plugins for real-world deployments with
+                wildcard certificates, distributed storage, and optimal
+                compression.
+              </p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">🔄</span>
+              <h3>Always Updated</h3>
+              <p>
+                Automated builds ensure you get the latest stable Caddy version
+                with security patches and plugin updates.
+              </p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">🚀</span>
+              <h3>Zero Downtime</h3>
+              <p>
+                Graceful reloads and hot config updates mean you never have to
+                stop your server for configuration changes.
+              </p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">🔐</span>
+              <h3>Secure by Default</h3>
+              <p>
+                Automatic HTTPS with Let's Encrypt, modern TLS defaults, and
+                battle-tested security configurations out of the box.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       <section class="plugins">
         <div class="container">
           <h2 class="section-title">Included Plugins</h2>
-          <div class="plugins-grid">
-            <div class="plugin-card">
-              <h3><span>☁️</span> Cloudflare DNS</h3>
-              <p>
-                ACME DNS challenge provider for wildcard certificates without
-                exposing ports.
-              </p>
-              <a
-                href="https://github.com/caddy-dns/cloudflare"
-                target="_blank"
-                rel="noopener"
-                >View on GitHub →</a
-              >
-            </div>
-            <div class="plugin-card">
-              <h3><span>🔴</span> Redis Storage</h3>
-              <p>Store certificates in Redis for multi-instance deployments.</p>
-              <a
-                href="https://github.com/pberkel/caddy-storage-redis"
-                target="_blank"
-                rel="noopener"
-                >View on GitHub →</a
-              >
-            </div>
-            <div class="plugin-card">
-              <h3><span>🐘</span> PostgreSQL Storage</h3>
-              <p>Certificate storage backend using PostgreSQL database.</p>
-              <a
-                href="https://github.com/yroc92/postgres-storage"
-                target="_blank"
-                rel="noopener"
-                >View on GitHub →</a
-              >
-            </div>
-            <div class="plugin-card">
-              <h3><span>🌐</span> Cloudflare KV</h3>
-              <p>Use Cloudflare Workers KV for edge certificate storage.</p>
-              <a
-                href="https://github.com/mentimeter/caddy-storage-cf-kv"
-                target="_blank"
-                rel="noopener"
-                >View on GitHub →</a
-              >
-            </div>
-            <div class="plugin-card">
-              <h3><span>📦</span> Brotli</h3>
-              <p>
-                Brotli compression encoder for better performance than gzip.
-              </p>
-              <a
-                href="https://github.com/ueffel/caddy-brotli"
-                target="_blank"
-                rel="noopener"
-                >View on GitHub →</a
-              >
-            </div>
+          <div class="plugins-grid" id="plugins-grid">
+            <div class="loading">Loading plugins...</div>
           </div>
         </div>
       </section>
 
-      <section class="install">
+      <section class="install" id="install">
         <div class="container">
           <h2 class="section-title">Installation</h2>
+
           <div class="code-block">
             <div class="code-header">
               <span class="code-title">Terminal</span>
-              <button class="copy-btn" onclick="copyCode()">Copy</button>
+              <button
+                class="copy-btn"
+                onclick="copyCode(this)"
+                aria-label="Copy installation commands"
+              >
+                Copy
+              </button>
             </div>
             <div class="code-content">
-              <pre><span class="comment"># Add GPG key</span>
+              <pre><span class="comment"># Add GPG key for package verification</span>
 <span class="command">curl</span> -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
 
-<span class="comment"># Add repository</span>
-<span class="command">echo</span> "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
+<span class="comment"># Add APT repository</span>
+<span class="command">echo</span> <span class="string">"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main"</span> | sudo tee /etc/apt/sources.list.d/caddy-custom.list
 
-<span class="comment"># Install</span>
+<span class="comment"># Update and install</span>
 sudo apt update && sudo apt install caddy</pre>
+            </div>
+          </div>
+
+          <div class="requirements">
+            <h3>📋 System Requirements</h3>
+            <ul>
+              <li>Ubuntu 20.04, 22.04, 24.04</li>
+              <li>Debian 11 (Bullseye) or newer</li>
+              <li>64-bit architecture (amd64/arm64)</li>
+            </ul>
+          </div>
+
+          <div class="verification">
+            <h3>✓ Verify Installation</h3>
+            <div class="verification-steps">
+              <div class="verification-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>Check version</h4>
+                  <p>
+                    <code>caddy version</code> - Should show custom build info
+                  </p>
+                </div>
+              </div>
+              <div class="verification-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>List modules</h4>
+                  <p>
+                    <code>caddy list-modules</code> - Verify plugins are loaded
+                  </p>
+                </div>
+              </div>
+              <div class="verification-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>Test configuration</h4>
+                  <p><code>caddy validate</code> - Check Caddyfile syntax</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -528,16 +886,36 @@ sudo apt update && sudo apt install caddy</pre>
               <span class="migrate-badge">One-liner</span>
             </div>
             <p>
-              This will backup your configs, disable the official repo, and
-              install the custom build.
+              Automatically backs up your configs, disables the official
+              repository, and switches to this custom build without data loss.
             </p>
             <div class="oneliner">
               <code
                 >curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo
                 bash</code
               >
-              <button class="copy-btn" onclick="copyMigrate()">Copy</button>
+              <button
+                class="copy-btn"
+                onclick="copyMigrate(this)"
+                aria-label="Copy migration command"
+              >
+                Copy
+              </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="quickstart" id="quickstart">
+        <div class="container">
+          <h2 class="section-title">Quick Start Examples</h2>
+
+          <div class="example-tabs" id="example-tabs">
+            <!-- Tabs will be dynamically generated -->
+          </div>
+
+          <div id="examples-content">
+            <!-- Example content will be dynamically generated -->
           </div>
         </div>
       </section>
@@ -546,45 +924,257 @@ sudo apt update && sudo apt install caddy</pre>
     <footer>
       <div class="container">
         <p>
-          Built by
-          <i
-            ><a
-              href="https://github.com/crazyuploader"
-              target="_blank"
-              rel="noopener"
-              >crazyuploader</a
-            ></i
+          Built with ⚡ by
+          <a
+            href="https://github.com/crazyuploader"
+            target="_blank"
+            rel="noopener"
           >
+            crazyuploader
+          </a>
           ·
-          <i
-            ><a
-              href="https://github.com/crazyuploader/caddy"
-              target="_blank"
-              rel="noopener"
-              >View Source</a
-            ></i
+          <a
+            href="https://github.com/crazyuploader/caddy"
+            target="_blank"
+            rel="noopener"
           >
+            View Source
+          </a>
+          ·
+          <a
+            href="https://github.com/crazyuploader/caddy/issues"
+            target="_blank"
+            rel="noopener"
+          >
+            Report Issue
+          </a>
         </p>
       </div>
     </footer>
 
     <script>
-      function copyCode() {
+      // Load build metadata from JSON
+      async function loadBuildMetadata() {
+        try {
+          const response = await fetch("build-metadata.json");
+          if (!response.ok) {
+            throw new Error("Failed to load build metadata");
+          }
+          const data = await response.json();
+          populatePage(data);
+        } catch (error) {
+          console.error("Error loading build metadata:", error);
+          showError(
+            "Failed to load build information. Please check if build-metadata.json exists.",
+          );
+        }
+      }
+
+      function populatePage(data) {
+        // Populate version info
+        const versionInfo = document.getElementById("version-info");
+        versionInfo.innerHTML = `
+          <div class="version-badge">
+            <span>Caddy</span>
+            <strong>${escapeHtml(data.caddy_version)}</strong>
+          </div>
+          <div class="version-badge">
+            <span>Go</span>
+            <strong>${escapeHtml(data.go_version)}</strong>
+          </div>
+          <div class="version-badge">
+            <span>Built</span>
+            <strong>${escapeHtml(data.build_date)}</strong>
+          </div>
+        `;
+
+        // Update plugin count
+        document.getElementById("plugin-count").textContent =
+          data.plugins.length;
+
+        // Populate plugins
+        populatePlugins(data.plugins);
+
+        // Populate examples if available
+        if (data.examples && data.examples.length > 0) {
+          populateExamples(data.examples);
+        } else {
+          document.getElementById("quickstart").style.display = "none";
+        }
+      }
+
+      function populatePlugins(plugins) {
+        const pluginsGrid = document.getElementById("plugins-grid");
+
+        if (plugins.length === 0) {
+          pluginsGrid.innerHTML =
+            '<p class="error">No plugins found in build metadata.</p>';
+          return;
+        }
+
+        pluginsGrid.innerHTML = plugins
+          .map(
+            (plugin) => `
+          <div class="plugin-card">
+            <div class="plugin-header">
+              <h3>
+                <span>${escapeHtml(plugin.icon || "📦")}</span>
+                ${escapeHtml(plugin.name)}
+              </h3>
+              ${plugin.version ? `<span class="plugin-version">${escapeHtml(plugin.version)}</span>` : ""}
+            </div>
+            <p>${escapeHtml(plugin.description)}</p>
+            <div class="plugin-links">
+              ${
+                plugin.repo_url
+                  ? `
+                <a href="${escapeHtml(plugin.repo_url)}" target="_blank" rel="noopener">
+                  Repository →
+                </a>
+              `
+                  : ""
+              }
+              ${
+                plugin.docs_url
+                  ? `
+                <a href="${escapeHtml(plugin.docs_url)}" target="_blank" rel="noopener">
+                  Documentation →
+                </a>
+              `
+                  : ""
+              }
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      function populateExamples(examples) {
+        const tabsContainer = document.getElementById("example-tabs");
+        const contentContainer = document.getElementById("examples-content");
+
+        // Generate tabs
+        tabsContainer.innerHTML = examples
+          .map(
+            (example, index) => `
+          <button class="tab-btn ${index === 0 ? "active" : ""}" 
+                  onclick="switchTab(event, 'example-${index}')"
+                  aria-label="Show ${escapeHtml(example.name)} example">
+            ${escapeHtml(example.name)}
+          </button>
+        `,
+          )
+          .join("");
+
+        // Generate content
+        contentContainer.innerHTML = examples
+          .map(
+            (example, index) => `
+          <div id="example-${index}" class="tab-content ${index === 0 ? "active" : ""}">
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-title">${escapeHtml(example.title || "Caddyfile")}</span>
+                <button class="copy-btn" onclick="copyExample(this, 'example-${index}-code')" 
+                        aria-label="Copy ${escapeHtml(example.name)} example">
+                  Copy
+                </button>
+              </div>
+              <div class="code-content">
+                <pre id="example-${index}-code">${escapeHtml(example.code)}</pre>
+              </div>
+            </div>
+            ${example.note ? `<p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 12px;">${escapeHtml(example.note)}</p>` : ""}
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      function showError(message) {
+        const versionInfo = document.getElementById("version-info");
+        versionInfo.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+
+        const pluginsGrid = document.getElementById("plugins-grid");
+        pluginsGrid.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function copyCode(btn) {
         const code = `curl -fsSL https://caddy.devjugal.com/public.key | sudo gpg --dearmor -o /usr/share/keyrings/caddy-custom.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/caddy-custom.gpg] https://caddy.devjugal.com stable main" | sudo tee /etc/apt/sources.list.d/caddy-custom.list
 sudo apt update && sudo apt install caddy`;
-        navigator.clipboard.writeText(code);
-        event.target.textContent = "Copied!";
-        setTimeout(() => (event.target.textContent = "Copy"), 2000);
+
+        copyToClipboard(code, btn);
       }
 
-      function copyMigrate() {
-        navigator.clipboard.writeText(
-          "curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo bash",
-        );
-        event.target.textContent = "Copied!";
-        setTimeout(() => (event.target.textContent = "Copy"), 2000);
+      function copyMigrate(btn) {
+        const code =
+          "curl -fsSL https://caddy.devjugal.com/migrate.sh | sudo bash";
+        copyToClipboard(code, btn);
       }
+
+      function copyExample(btn, id) {
+        const code = document.getElementById(id).textContent;
+        copyToClipboard(code, btn);
+      }
+
+      function copyToClipboard(text, btn) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            const originalText = btn.textContent;
+            btn.textContent = "Copied!";
+            btn.classList.add("copied");
+
+            setTimeout(() => {
+              btn.textContent = originalText;
+              btn.classList.remove("copied");
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error("Failed to copy:", err);
+            btn.textContent = "Failed";
+            setTimeout(() => {
+              btn.textContent = "Copy";
+            }, 2000);
+          });
+      }
+
+      function switchTab(event, tabId) {
+        document.querySelectorAll(".tab-content").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        document.getElementById(tabId).classList.add("active");
+        event.target.classList.add("active");
+      }
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Load metadata on page load
+      loadBuildMetadata();
     </script>
   </body>
 </html>
