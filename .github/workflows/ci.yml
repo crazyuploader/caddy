@@ -27,3 +27,32 @@ jobs:
           distribution: goreleaser
           version: latest
           args: release --snapshot --clean --skip=publish,docker,sign
+
+      - name: Verify Builds
+        run: |
+          # Find the linux build
+          CADDY_BIN=$(find dist -name caddy -type f | grep linux_amd64 | head -n 1)
+          if [ -z "$CADDY_BIN" ]; then
+            echo "::error::Could not find built binary"
+            exit 1
+          fi
+
+          chmod +x "$CADDY_BIN"
+          echo "Verifying binary: $CADDY_BIN"
+
+          # Check version
+          "$CADDY_BIN" version
+
+          # Check modules
+          MODULES=$("$CADDY_BIN" list-modules)
+
+          REQUIRED=("dns.providers.cloudflare" "caddy.storage.redis" "caddy.storage.postgres" "caddy.storage.cloudflare_kv" "http.encoders.br" "http.handlers.rate_limit")
+
+          for mod in "${REQUIRED[@]}"; do
+            if echo "$MODULES" | grep -q "$mod"; then
+              echo "✅ Plugin found: $mod"
+            else
+              echo "::error::Missing plugin: $mod"
+              exit 1
+            fi
+          done
