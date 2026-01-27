@@ -71,6 +71,8 @@ nfpms:
       - httpd
     replaces:
       - caddy
+    conflicts:
+      - caddy
     formats:
       - deb
       - rpm
