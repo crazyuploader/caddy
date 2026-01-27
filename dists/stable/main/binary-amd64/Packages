@@ -1,0 +1,24 @@
+Package: caddy
+Priority: optional
+Section: web
+Installed-Size: 73869
+Maintainer: Jugal Kishore
+Architecture: amd64
+Version: 2.10.2
+Replaces: caddy
+Provides: httpd
+Depends: ca-certificates
+Recommends: systemd
+Conflicts: caddy
+Filename: pool/main/c/caddy/caddy_2.10.2_linux_amd64.deb
+Size: 22960726
+MD5sum: 76eb7ee78d64b92eb69e2be601a343ea
+SHA1: c2f191f16889a167da3dce7a9446eba35f80742d
+SHA256: 2f36ec351bb02d0cda6194dfa316155dd6d0e9f2c909c656953b6034b2839468
+SHA512: 3f76bfe0096c159c08c2f2c370f56bd8ea6b5a5d49adef3909cc5e10fd93b644b5b6c737d883c9b902d55be2f520fbc9fff14565087634f9ffa2bbcdeb1379c9
+Description: Caddy Web Server with custom plugins.
+ Includes: cloudflare-dns, redis-storage, postgres-storage, cf-kv-storage, brotli, rate-limit
+Bugs: https://github.com/crazyuploader/caddy/issues
+Homepage: https://github.com/crazyuploader/caddy
+License: MIT
+
