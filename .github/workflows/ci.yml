@@ -46,7 +46,7 @@ jobs:
           # Check modules
           MODULES=$("$CADDY_BIN" list-modules)
 
-          REQUIRED=("dns.providers.cloudflare" "caddy.storage.redis" "caddy.storage.postgres" "caddy.storage.cloudflare_kv" "http.encoders.br" "http.handlers.rate_limit")
+          REQUIRED=("dns.providers.cloudflare" "caddy.storage.redis" "caddy.storage.postgres" "caddy.storage.cloudflare_kv" "http.encoders.br" "http.handlers.rate_limit" "layer4")
 
           for mod in "${REQUIRED[@]}"; do
             if echo "$MODULES" | grep -q "$mod"; then

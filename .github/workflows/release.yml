@@ -188,6 +188,7 @@ jobs:
           - caddy.storage.cloudflare_kv
           - http.encoders.br
           - http.handlers.rate_limit
+          - layer4
 
           [View Documentation](https://caddy.devjugal.com)
           EOF

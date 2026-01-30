@@ -113,4 +113,4 @@ if command -v rc-update >/dev/null 2>&1; then
 	rc-update add caddy default 2>/dev/null || true
 fi
 
-echo "Caddy with custom plugins [Cloudflare DNS, Redis Storage, PostgreSQL Storage, Cloudflare KV Storage, Brotli, Rate Limit] installed successfully!"
+echo "Caddy with custom plugins installed successfully!"

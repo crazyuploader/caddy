@@ -13,6 +13,7 @@ import (
 	// Custom plugins
 	_ "github.com/caddy-dns/cloudflare"
 	_ "github.com/mentimeter/caddy-storage-cf-kv"
+	_ "github.com/mholt/caddy-l4"
 	_ "github.com/mholt/caddy-ratelimit"
 	_ "github.com/pberkel/caddy-storage-redis"
 	_ "github.com/ueffel/caddy-brotli"

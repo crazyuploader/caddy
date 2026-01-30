@@ -73,6 +73,14 @@ cat > public/build-metadata.json <<EOF
        "repo_url": "https://github.com/mholt/caddy-ratelimit",
        "docs_url": "https://github.com/mholt/caddy-ratelimit#readme"
 
+    },
+    {
+      "name": "Layer 4",
+      "icon": "🛡️",
+      "description": "Layer 4 (TCP/UDP) matching and proxying.",
+      "version": "v0.0.0-20260127203130-040d25cc886a",
+      "repo_url": "https://github.com/mholt/caddy-l4",
+      "docs_url": "https://github.com/mholt/caddy-l4#readme"
     }
   ],
   "examples": [
