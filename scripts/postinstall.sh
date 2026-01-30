@@ -48,6 +48,7 @@ if [ ! -f /etc/caddy/Caddyfile ]; then
 # - Cloudflare KV (caddy.storage.cloudflare_kv)
 # - Brotli (http.encoders.br)
 # - Rate Limit (http.handlers.rate_limit)
+# - Layer 4 (layer4)
 #
 # Documentation: https://caddyserver.com/docs/caddyfile
 
