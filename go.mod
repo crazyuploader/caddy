@@ -3,7 +3,7 @@ module github.com/crazyuploader/caddy
 go 1.25.6
 
 require (
-	github.com/caddy-dns/cloudflare v0.2.2
+	github.com/caddy-dns/cloudflare v0.2.3
 	github.com/caddyserver/caddy/v2 v2.10.2
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
 	github.com/mholt/caddy-l4 v0.0.0-20260211001521-5b50eb6ed84c
