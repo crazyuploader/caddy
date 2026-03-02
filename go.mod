@@ -6,7 +6,7 @@ require (
 	github.com/caddy-dns/cloudflare v0.2.3
 	github.com/caddyserver/caddy/v2 v2.11.1
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
-	github.com/mholt/caddy-l4 v0.0.0-20260216070754-eca560d759c9
+	github.com/mholt/caddy-l4 v0.0.0-20260302122623-f7fc5f706193
 	github.com/mholt/caddy-ratelimit v0.1.0
 	github.com/pberkel/caddy-storage-redis v1.6.0
 	github.com/ueffel/caddy-brotli v1.6.0
@@ -176,7 +176,7 @@ require (
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260213171211-a408498e5541 // indirect
 	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546 // indirect
 	golang.org/x/mod v0.33.0 // indirect
-	golang.org/x/net v0.50.0 // indirect
+	golang.org/x/net v0.51.0 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
