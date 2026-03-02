@@ -316,6 +316,8 @@ github.com/mholt/caddy-l4 v0.0.0-20260214231904-36fb59e026c6 h1:j+CPMT9T8aQ+7m6M
 github.com/mholt/caddy-l4 v0.0.0-20260214231904-36fb59e026c6/go.mod h1:WRjBvz+69EXzHIO9K0Vag0MNqIQ90A2Iw0W6wRgY6Kk=
 github.com/mholt/caddy-l4 v0.0.0-20260216070754-eca560d759c9 h1:k1IfzTueoADz9945YdLITFxDBnYSWF3hYJZUDYuUOc8=
 github.com/mholt/caddy-l4 v0.0.0-20260216070754-eca560d759c9/go.mod h1:WRjBvz+69EXzHIO9K0Vag0MNqIQ90A2Iw0W6wRgY6Kk=
+github.com/mholt/caddy-l4 v0.0.0-20260302122623-f7fc5f706193 h1:D3W/XEkjpj32wEgKjq/LXaMy0wIYLNqJFG8PuVuFn1A=
+github.com/mholt/caddy-l4 v0.0.0-20260302122623-f7fc5f706193/go.mod h1:xxUEBusQXwvvX2/rYmCQhoaRD/lESfVh7wfnQ6Y0aDQ=
 github.com/mholt/caddy-ratelimit v0.1.0 h1:73lOvdSLSoBGPT5l61nrTzh9liax+IDfXeQDtfzNcZ4=
 github.com/mholt/caddy-ratelimit v0.1.0/go.mod h1:smAiS3nAflvLDTiGNKUlPXG47Ke3bAiexcWWipVzvMY=
 github.com/miekg/dns v1.1.69 h1:Kb7Y/1Jo+SG+a2GtfoFUfDkG//csdRPwRLkCsxDG9Sc=
@@ -657,6 +659,8 @@ golang.org/x/net v0.49.0 h1:eeHFmOGUTtaaPSGNmjBKpbng9MulQsJURQUAfUwY++o=
 golang.org/x/net v0.49.0/go.mod h1:/ysNB2EvaqvesRkuLAyjI1ycPZlQHM3q01F02UY/MV8=
 golang.org/x/net v0.50.0 h1:ucWh9eiCGyDR3vtzso0WMQinm2Dnt8cFMuQa9K33J60=
 golang.org/x/net v0.50.0/go.mod h1:UgoSli3F/pBgdJBHCTc+tp3gmrU4XswgGRgtnwWTfyM=
+golang.org/x/net v0.51.0 h1:94R/GTO7mt3/4wIKpcR5gkGmRLOuE/2hNGeWq/GBIFo=
+golang.org/x/net v0.51.0/go.mod h1:aamm+2QF5ogm02fjy5Bb7CQ0WMt1/WVM7FtyaTLlA9Y=
 golang.org/x/oauth2 v0.33.0 h1:4Q+qn+E5z8gPRJfmRy7C2gGG3T4jIprK6aSYgTXGRpo=
 golang.org/x/oauth2 v0.33.0/go.mod h1:lzm5WQJQwKZ3nwavOZ3IS5Aulzxi68dUSgRHujetwEA=
 golang.org/x/oauth2 v0.34.0 h1:hqK/t4AKgbqWkdkcAeI8XLmbK+4m4G5YeQRrmiotGlw=
