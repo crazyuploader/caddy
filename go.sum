@@ -324,6 +324,8 @@ github.com/mholt/caddy-l4 v0.0.0-20260303160051-86ea3cdf5c8c h1:sFuNDXHe+4eOMMDT
 github.com/mholt/caddy-l4 v0.0.0-20260303160051-86ea3cdf5c8c/go.mod h1:xxUEBusQXwvvX2/rYmCQhoaRD/lESfVh7wfnQ6Y0aDQ=
 github.com/mholt/caddy-l4 v0.0.0-20260304182434-d882e9c2661d h1:OomtdPEZ3QwmnLxORyTLHjLoXlfXCgc9gisI7Wmo5ag=
 github.com/mholt/caddy-l4 v0.0.0-20260304182434-d882e9c2661d/go.mod h1:xxUEBusQXwvvX2/rYmCQhoaRD/lESfVh7wfnQ6Y0aDQ=
+github.com/mholt/caddy-l4 v0.0.0-20260307192245-45c14772474b h1:er/7k3eT/6KnHZGOi8WFe2qDHn6FRIyyc/SJtSdJZLE=
+github.com/mholt/caddy-l4 v0.0.0-20260307192245-45c14772474b/go.mod h1:xxUEBusQXwvvX2/rYmCQhoaRD/lESfVh7wfnQ6Y0aDQ=
 github.com/mholt/caddy-ratelimit v0.1.0 h1:73lOvdSLSoBGPT5l61nrTzh9liax+IDfXeQDtfzNcZ4=
 github.com/mholt/caddy-ratelimit v0.1.0/go.mod h1:smAiS3nAflvLDTiGNKUlPXG47Ke3bAiexcWWipVzvMY=
 github.com/miekg/dns v1.1.69 h1:Kb7Y/1Jo+SG+a2GtfoFUfDkG//csdRPwRLkCsxDG9Sc=
