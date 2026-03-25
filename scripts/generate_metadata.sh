@@ -6,7 +6,7 @@ set -e
 
 CADDY_VERSION="$1"
 if [ -z "$CADDY_VERSION" ]; then
-    CADDY_VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "custom-dev")
+	CADDY_VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "custom-dev")
 fi
 
 # Determine Go version
@@ -19,7 +19,7 @@ BUILD_DATE=$(date +"%b %d, %Y")
 # We use a heredoc for the template, injecting variables.
 # The plugins and examples are hardcoded to match the custom build definition.
 
-cat > public/build-metadata.json <<EOF
+cat >public/build-metadata.json <<EOF
 {
   "caddy_version": "${CADDY_VERSION}",
   "go_version": "${GO_VERSION}",
@@ -32,6 +32,14 @@ cat > public/build-metadata.json <<EOF
       "version": "v0.9.0",
       "repo_url": "https://github.com/caddy-dns/cloudflare",
       "docs_url": "https://caddyserver.com/docs/modules/dns.providers.cloudflare"
+    },
+    {
+      "name": "Caddy Security",
+      "icon": "🔐",
+      "description": "Authentication, Authorization, and Accounting (AAA) app and plugin. Implements Form-Based, Basic, Local, LDAP, OpenID Connect, OAuth 2.0, SAML Authentication. MFA/2FA with App Authenticators and Yubico. Authorization with JWT/PASETO tokens.",
+      "version": "v1.1.52",
+      "repo_url": "https://github.com/greenpau/caddy-security",
+      "docs_url": "https://docs.authcrunch.com"
     },
     {
       "name": "Redis Storage",
@@ -66,13 +74,12 @@ cat > public/build-metadata.json <<EOF
       "docs_url": "https://github.com/ueffel/caddy-brotli#readme"
     },
     {
-       "name": "Rate Limit",
-       "icon": "🚦",
-       "description": "Enable rate limiting for HTTP requests to prevent abuse and manage traffic spikes.",
-       "version": "v0.1.0",
-       "repo_url": "https://github.com/mholt/caddy-ratelimit",
-       "docs_url": "https://github.com/mholt/caddy-ratelimit#readme"
-
+      "name": "Rate Limit",
+      "icon": "🚦",
+      "description": "Enable rate limiting for HTTP requests to prevent abuse and manage traffic spikes.",
+      "version": "v0.1.0",
+      "repo_url": "https://github.com/mholt/caddy-ratelimit",
+      "docs_url": "https://github.com/mholt/caddy-ratelimit#readme"
     },
     {
       "name": "Layer 4",
@@ -89,6 +96,12 @@ cat > public/build-metadata.json <<EOF
       "title": "Caddyfile - Wildcard Certificate",
       "code": "# Get wildcard certificate for all subdomains\n*.example.com {\n    tls {\n        dns cloudflare {env.CLOUDFLARE_API_TOKEN}\n    }\n    \n    # Your site configuration\n    reverse_proxy localhost:3000\n}",
       "note": "Set your API token as environment variable: export CLOUDFLARE_API_TOKEN=your_token_here"
+    },
+    {
+      "name": "Caddy Security",
+      "title": "Caddyfile - Form-Based Authentication",
+      "code": "example.com {\n    # Enable authentication portal\n    auth_portal {\n        /portal internal\n        /portal/signout\n    }\n\n    # Protect admin area\n    @admin {\n        path /admin/*\n    }\n\n    reverse_proxy @admin localhost:8080\n}",
+      "note": "Users can self-register via /portal/register. Configure providers like Google, GitHub, etc. via the security app."
     },
     {
       "name": "Redis Storage",
