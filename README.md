@@ -10,6 +10,7 @@ Custom [Caddy Web Server](https://github.com/caddyserver/caddy) build with addit
 | Plugin                                                             | Description                                      |
 | ------------------------------------------------------------------ | ------------------------------------------------ |
 | [cloudflare-dns](https://github.com/caddy-dns/cloudflare)          | DNS provider for Cloudflare (ACME DNS challenge) |
+| [caddy-security](https://github.com/greenpau/caddy-security)       | Authentication, Authorization, and AAA (AAA)     |
 | [redis-storage](https://github.com/pberkel/caddy-storage-redis)    | Redis storage for certificates                   |
 | [postgres-storage](https://github.com/yroc92/postgres-storage)     | PostgreSQL storage for certificates              |
 | [cf-kv-storage](https://github.com/mentimeter/caddy-storage-cf-kv) | Cloudflare KV storage                            |
@@ -130,7 +131,7 @@ sudo nano /etc/caddy/Caddyfile
 ### Verify Plugins
 
 ```bash
-caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit|layer4)'
+caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.security|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit|layer4)'
 ```
 
 ## License

@@ -183,6 +183,7 @@ jobs:
           ## Included Plugins
 
           - dns.providers.cloudflare
+          - caddy.security
           - caddy.storage.redis
           - caddy.storage.postgres
           - caddy.storage.cloudflare_kv
