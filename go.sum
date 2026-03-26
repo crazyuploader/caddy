@@ -198,6 +198,8 @@ github.com/go-sql-driver/mysql v1.9.3 h1:U/N249h2WzJ3Ukj8SowVFjdtZKfu9vlLZxjPXV1
 github.com/go-sql-driver/mysql v1.9.3/go.mod h1:qn46aNg1333BRMNU69Lq93t8du/dwxI64Gl8i5p1WMU=
 github.com/golang-jwt/jwt/v4 v4.5.2 h1:YtQM7lnr8iZ+j5q71MGKkNw9Mn7AjHM68uc9g5fXeUI=
 github.com/golang-jwt/jwt/v4 v4.5.2/go.mod h1:m21LjoU+eqJr34lmDMbreY2eSTRJ1cv77w39/MY0Ch0=
+github.com/golang-jwt/jwt/v5 v5.3.1 h1:kYf81DTWFe7t+1VvL7eS+jKFVWaUnK9cB1qbwn63YCY=
+github.com/golang-jwt/jwt/v5 v5.3.1/go.mod h1:fxCRLWMO43lRc8nhHWY6LGqRcf+1gQWArsqaEUEa5bE=
 github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
 github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=
@@ -231,8 +233,12 @@ github.com/googleapis/gax-go/v2 v2.18.0 h1:jxP5Uuo3bxm3M6gGtV94P4lliVetoCB4Wk2x8
 github.com/googleapis/gax-go/v2 v2.18.0/go.mod h1:uSzZN4a356eRG985CzJ3WfbFSpqkLTjsnhWGJR6EwrE=
 github.com/greenpau/caddy-security v1.1.52 h1:/fsAt/IiRHgZj4V28mcoV+xhQm/78o2nZuQv2PVO8q0=
 github.com/greenpau/caddy-security v1.1.52/go.mod h1:asCJCv2i4M1at47wEinU9wN3W0ztFaHFTBrH7y0Um0U=
+github.com/greenpau/caddy-security v1.1.53 h1:/cfANu0MHyF/QMNZrK5we2U020nxi1Z7F/EhtbsKIvg=
+github.com/greenpau/caddy-security v1.1.53/go.mod h1:ZXIH71WeHuF0qHo8nQ+/Xdfibd2Ojbt5DophmtKazqI=
 github.com/greenpau/go-authcrunch v1.1.28 h1:cnbRoA/IQwFi4SN6niNJFJu5I7nMBeP3k+jxy05Ntqg=
 github.com/greenpau/go-authcrunch v1.1.28/go.mod h1:xPnOhjiTb2nT80oD6utWe46sNanLkeXYNBt+53Kex1Y=
+github.com/greenpau/go-authcrunch v1.1.29 h1:alsTZOlVs4QgEJ9xrqwbpR8Zx/59/4+/hlNsgdATYPk=
+github.com/greenpau/go-authcrunch v1.1.29/go.mod h1:MGZrzyyrJZgSjP2726hPZ81Plc5Jl3VX+F9TZIUtQSE=
 github.com/greenpau/versioned v1.0.30 h1:QILUlfTSyJnhT8Gw9lLonZmuP5ahNQoJizw7mo30IQ4=
 github.com/greenpau/versioned v1.0.30/go.mod h1:rtFCvaWWNbMH4CJnje/xicgmrM63j++rUh5juSu0k/A=
 github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.7 h1:X+2YciYSxvMQK0UZ7sg45ZVabVZBeBuvMkmuI2V3Fak=
