@@ -5,7 +5,7 @@ go 1.25.6
 require (
 	github.com/caddy-dns/cloudflare v0.2.4
 	github.com/caddyserver/caddy/v2 v2.11.2
-	github.com/greenpau/caddy-security v1.1.59
+	github.com/greenpau/caddy-security v1.1.60
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
 	github.com/mholt/caddy-l4 v0.1.0
 	github.com/mholt/caddy-ratelimit v0.1.0
@@ -81,7 +81,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.14 // indirect
 	github.com/googleapis/gax-go/v2 v2.18.0 // indirect
-	github.com/greenpau/go-authcrunch v1.1.35 // indirect
+	github.com/greenpau/go-authcrunch v1.1.36 // indirect
 	github.com/greenpau/versioned v1.0.30 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.7 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
