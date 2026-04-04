@@ -127,6 +127,24 @@ nfpms:
         preupgrade: ./scripts/preinstall.sh
         postupgrade: ./scripts/postinstall.sh
 
+homebrew_casks:
+  - repository:
+      owner: crazyuploader
+      name: homebrew-tools
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    name: caddy
+    homepage: "https://github.com/crazyuploader/caddy"
+    description: "Caddy Web Server with custom plugins (cloudflare-dns, security, redis/postgres storage, brotli, rate-limit, layer4)"
+    license: "Apache-2.0"
+    binaries:
+      - caddy
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/caddy"]
+          end
+
 dockers_v2:
   - images:
       - "ghcr.io/crazyuploader/caddy"
