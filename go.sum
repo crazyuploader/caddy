@@ -231,12 +231,8 @@ github.com/googleapis/enterprise-certificate-proxy v0.3.14 h1:yh8ncqsbUY4shRD5dA
 github.com/googleapis/enterprise-certificate-proxy v0.3.14/go.mod h1:vqVt9yG9480NtzREnTlmGSBmFrA+bzb0yl0TxoBQXOg=
 github.com/googleapis/gax-go/v2 v2.18.0 h1:jxP5Uuo3bxm3M6gGtV94P4lliVetoCB4Wk2x8QA86LI=
 github.com/googleapis/gax-go/v2 v2.18.0/go.mod h1:uSzZN4a356eRG985CzJ3WfbFSpqkLTjsnhWGJR6EwrE=
-github.com/greenpau/caddy-security v1.1.61 h1:Hjdhwa9SVNU55k9qZm8NyMEzWQcae1i4fYd/hJNIuJg=
-github.com/greenpau/caddy-security v1.1.61/go.mod h1:9kc5iik8j9132Qe3vAUUDL6pVqLTSlpdgXd8LCZusH0=
 github.com/greenpau/caddy-security v1.1.62 h1:TQ8qnrpHddr5gO3GFlcpsmA7pg+iXffaGxSbm56xQuQ=
 github.com/greenpau/caddy-security v1.1.62/go.mod h1:zjUzzLcjER1fZpMyB1qIYD0BiLKsH3DNv747q9BDZRk=
-github.com/greenpau/go-authcrunch v1.1.38 h1:/pqdCcJTl7Al/N5BryN0eLcbKdAU/r8MTDm0me+1L6U=
-github.com/greenpau/go-authcrunch v1.1.38/go.mod h1:MGZrzyyrJZgSjP2726hPZ81Plc5Jl3VX+F9TZIUtQSE=
 github.com/greenpau/go-authcrunch v1.1.39 h1:uK2/dj4q0w4ddQbqxp5UCbMz289b0ZL/Q34TyO7PYCk=
 github.com/greenpau/go-authcrunch v1.1.39/go.mod h1:MGZrzyyrJZgSjP2726hPZ81Plc5Jl3VX+F9TZIUtQSE=
 github.com/greenpau/versioned v1.0.30 h1:QILUlfTSyJnhT8Gw9lLonZmuP5ahNQoJizw7mo30IQ4=
@@ -257,8 +253,8 @@ github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsI
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 h1:iCEnooe7UlwOQYpKFhBabPMi4aNAfoODPEFNiAnClxo=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761/go.mod h1:5TJZWKEWniPve33vlWYSoGYefn3gLQRzjfDlhSJ9ZKM=
-github.com/jackc/pgx/v5 v5.8.0 h1:TYPDoleBBme0xGSAX3/+NujXXtpZn9HBONkQC7IEZSo=
-github.com/jackc/pgx/v5 v5.8.0/go.mod h1:QVeDInX2m9VyzvNeiCJVjCkNFqzsNb43204HshNSZKw=
+github.com/jackc/pgx/v5 v5.9.2 h1:3ZhOzMWnR4yJ+RW1XImIPsD1aNSz4T4fyP7zlQb56hw=
+github.com/jackc/pgx/v5 v5.9.2/go.mod h1:mal1tBGAFfLHvZzaYh77YS/eC6IX9OWbRV1QIIM0Jn4=
 github.com/jackc/puddle/v2 v2.2.2 h1:PR8nw+E/1w0GLuRFSmiioY6UooMp6KJv0/61nB7icHo=
 github.com/jackc/puddle/v2 v2.2.2/go.mod h1:vriiEXHvEE654aYKXXjOvZM39qJ0q+azkZFrfEOc3H4=
 github.com/jcmturner/aescts/v2 v2.0.0 h1:9YKLH6ey7H4eDBXW8khjYslgyqG2xZikXP0EQFKrle8=
