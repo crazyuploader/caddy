@@ -7,7 +7,7 @@ require (
 	github.com/caddyserver/caddy/v2 v2.11.3
 	github.com/greenpau/caddy-security v1.1.62
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
-	github.com/mholt/caddy-l4 v0.1.0
+	github.com/mholt/caddy-l4 v0.1.1
 	github.com/mholt/caddy-ratelimit v0.1.0
 	github.com/pberkel/caddy-storage-redis v1.8.0
 	github.com/ueffel/caddy-brotli v1.6.0
@@ -59,7 +59,7 @@ require (
 	github.com/emersion/go-sasl v0.0.0-20241020182733-b788ff22d5a6 // indirect
 	github.com/emersion/go-smtp v0.24.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/fsnotify/fsnotify v1.9.0 // indirect
+	github.com/fsnotify/fsnotify v1.10.1 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.8-0.20250403174932-29230038a667 // indirect
 	github.com/go-chi/chi/v5 v5.2.5 // indirect
@@ -109,7 +109,7 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.6.1 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
-	github.com/pires/go-proxyproto v0.11.0 // indirect
+	github.com/pires/go-proxyproto v0.12.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
@@ -140,7 +140,7 @@ require (
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/tailscale/go-winio v0.0.0-20231025203758-c4f33415bf55 // indirect
 	github.com/tailscale/tscert v0.0.0-20251216020129-aea342f6d747 // indirect
-	github.com/things-go/go-socks5 v0.1.0 // indirect
+	github.com/things-go/go-socks5 v0.1.1 // indirect
 	github.com/tidwall/gjson v1.18.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
@@ -183,7 +183,7 @@ require (
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.27.1 // indirect
+	go.uber.org/zap v1.28.0 // indirect
 	go.uber.org/zap/exp v0.3.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
