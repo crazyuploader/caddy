@@ -193,13 +193,13 @@ release:
 
 signs:
   - cmd: cosign
-    signature: "${artifact}.bundle"
+    signature: "${artifact}.sigstore.json"
     args:
       - "sign-blob"
-      - "--yes"
       - "--bundle=${signature}"
       - "${artifact}"
-    artifacts: all
+      - "--yes"
+    artifacts: checksum
 
 checksum:
   name_template: "checksums.txt"
