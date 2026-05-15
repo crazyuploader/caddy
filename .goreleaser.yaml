@@ -63,7 +63,7 @@ nfpms:
     maintainer: "Jugal Kishore"
     description: |
       Caddy Web Server with custom plugins.
-      Includes: cloudflare-dns, caddy-security, redis-storage, postgres-storage, cf-kv-storage, brotli, rate-limit
+      Includes: cloudflare-dns, caddy-security, redis-storage, postgres-storage, cf-kv-storage, brotli, rate-limit, caddy-waf
     license: "MIT"
     section: web
     priority: optional
@@ -134,7 +134,7 @@ homebrew_casks:
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     name: caddy
     homepage: "https://github.com/crazyuploader/caddy"
-    description: "Caddy Web Server with custom plugins (cloudflare-dns, security, redis/postgres storage, brotli, rate-limit, layer4)"
+    description: "Caddy Web Server with custom plugins (cloudflare-dns, security, redis/postgres storage, brotli, rate-limit, layer4, waf)"
     license: "Apache-2.0"
     binaries:
       - caddy
@@ -186,6 +186,7 @@ release:
     - http.encoders.br
     - http.handlers.rate_limit
     - layer4
+    - http.handlers.waf
 
     ### Installation via APT
     See [installation instructions](https://caddy.devjugal.com)

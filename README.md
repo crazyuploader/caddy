@@ -17,6 +17,7 @@ Custom [Caddy Web Server](https://github.com/caddyserver/caddy) build with addit
 | [brotli](https://github.com/ueffel/caddy-brotli)                   | Brotli compression encoder                       |
 | [rate-limit](https://github.com/mholt/caddy-ratelimit)             | HTTP rate limiting                               |
 | [layer4](https://github.com/mholt/caddy-l4)                        | Layer 4 (TCP/UDP) matching and proxying          |
+| [caddy-waf](https://github.com/fabriziosalmi/caddy-waf)            | Web Application Firewall (WAF)                   |
 
 ## Installation
 
@@ -131,7 +132,7 @@ sudo nano /etc/caddy/Caddyfile
 ### Verify Plugins
 
 ```bash
-caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.security|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit|layer4)'
+caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.security|caddy.storage.redis|caddy.storage.postgres|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit|layer4|http.handlers.waf)'
 ```
 
 ## License

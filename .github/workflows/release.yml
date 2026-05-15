@@ -191,6 +191,7 @@ jobs:
           - http.encoders.br
           - http.handlers.rate_limit
           - layer4
+          - http.handlers.waf
 
           [View Documentation](https://caddy.devjugal.com)
           EOF

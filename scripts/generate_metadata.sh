@@ -88,6 +88,14 @@ cat >public/build-metadata.json <<EOF
       "version": "v0.0.0-20260127203130-040d25cc886a",
       "repo_url": "https://github.com/mholt/caddy-l4",
       "docs_url": "https://github.com/mholt/caddy-l4#readme"
+    },
+    {
+      "name": "Caddy WAF",
+      "icon": "🔒",
+      "description": "Web Application Firewall providing OWASP CRS rules, IP blocking, rate limiting, and request inspection to protect against common web attacks.",
+      "version": "v0.3.3",
+      "repo_url": "https://github.com/fabriziosalmi/caddy-waf",
+      "docs_url": "https://github.com/fabriziosalmi/caddy-waf#readme"
     }
   ],
   "examples": [
