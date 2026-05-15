@@ -154,6 +154,17 @@ jobs:
 
           mkdir -p dist-repo
           cp -r ~/.aptly/public/* dist-repo/
+
+          # Remove pool/ — .deb files are already on GitHub Releases.
+          # CF Pages _redirects proxies /pool/* → GitHub Releases so apt clients
+          # follow the redirect transparently when downloading packages.
+          rm -rf dist-repo/pool/
+
+          # Generate redirect rules: /pool/main/c/caddy/* → GitHub Releases
+          cat > dist-repo/_redirects << REDIRECTEOF
+/pool/main/c/caddy/* https://github.com/${{ github.repository }}/releases/download/v${{ needs.check-version.outputs.version }}/:splat 302
+REDIRECTEOF
+
           gpg --armor --export ${{ secrets.GPG_KEY_ID }} > dist-repo/public.key
           cp ./scripts/migrate.sh dist-repo/migrate.sh
 
