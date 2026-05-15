@@ -161,9 +161,7 @@ jobs:
           rm -rf dist-repo/pool/
 
           # Generate redirect rules: /pool/main/c/caddy/* → GitHub Releases
-          cat > dist-repo/_redirects << REDIRECTEOF
-/pool/main/c/caddy/* https://github.com/${{ github.repository }}/releases/download/v${{ needs.check-version.outputs.version }}/:splat 302
-REDIRECTEOF
+          echo "/pool/main/c/caddy/* https://github.com/${{ github.repository }}/releases/download/v${{ needs.check-version.outputs.version }}/:splat 302" > dist-repo/_redirects
 
           gpg --armor --export ${{ secrets.GPG_KEY_ID }} > dist-repo/public.key
           cp ./scripts/migrate.sh dist-repo/migrate.sh
