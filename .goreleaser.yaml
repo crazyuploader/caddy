@@ -19,6 +19,8 @@ builds:
       - amd64
       - arm64
       - arm
+    goamd64:
+      - v3
     goarm:
       - "7"
     ignore:
@@ -32,6 +34,7 @@ builds:
     flags:
       - -trimpath
       - -mod=readonly
+      - -buildvcs=false
     ldflags:
       - -s -w
 
