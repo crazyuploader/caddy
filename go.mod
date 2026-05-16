@@ -9,7 +9,7 @@ require (
 	github.com/greenpau/caddy-security v1.1.62
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
 	github.com/mholt/caddy-l4 v0.1.1
-	github.com/mholt/caddy-ratelimit v0.1.0
+	github.com/mholt/caddy-ratelimit v0.1.1-0.20260514184501-6cc6d952a591
 	github.com/pberkel/caddy-storage-redis v1.8.0
 	github.com/ueffel/caddy-brotli v1.6.0
 	github.com/yroc92/postgres-storage v0.0.0-20230310195636-276797aefe40
