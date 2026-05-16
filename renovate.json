@@ -6,5 +6,21 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["gomod"],
+      "matchPackageNames": [
+        "github.com/mholt/caddy-ratelimit",
+        "github.com/fabriziosalmi/caddy-waf",
+        "github.com/mholt/caddy-l4"
+      ],
+      "versioning": "semver",
+      "automerge": false,
+      "labels": ["plugin-update"]
+    }
+  ],
+  "digest": {
+    "automerge": false
   }
 }
