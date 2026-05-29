@@ -320,6 +320,8 @@ github.com/mholt/caddy-ratelimit v0.1.0 h1:73lOvdSLSoBGPT5l61nrTzh9liax+IDfXeQDt
 github.com/mholt/caddy-ratelimit v0.1.0/go.mod h1:smAiS3nAflvLDTiGNKUlPXG47Ke3bAiexcWWipVzvMY=
 github.com/mholt/caddy-ratelimit v0.1.1-0.20260514184501-6cc6d952a591 h1:gvktzaOCiOZWlToRwD8RZtZc/z/J/lqKfLP5xK99zFs=
 github.com/mholt/caddy-ratelimit v0.1.1-0.20260514184501-6cc6d952a591/go.mod h1:53Zd3yf9HJ2GfXLr+T12yLxmT9Kqi3HFqez2Kvn0XDU=
+github.com/mholt/caddy-ratelimit v0.1.1-0.20260521172720-16aecbbcb8ca h1:OU4Ji2caQc8oLFgOKROvpuUiDV/swdFaD8Zuygr02zA=
+github.com/mholt/caddy-ratelimit v0.1.1-0.20260521172720-16aecbbcb8ca/go.mod h1:53Zd3yf9HJ2GfXLr+T12yLxmT9Kqi3HFqez2Kvn0XDU=
 github.com/miekg/dns v1.1.72 h1:vhmr+TF2A3tuoGNkLDFK9zi36F2LS+hKTRW0Uf8kbzI=
 github.com/miekg/dns v1.1.72/go.mod h1:+EuEPhdHOsfk6Wk5TT2CzssZdqkmFhf8r+aVyDEToIs=
 github.com/mitchellh/copystructure v1.2.0 h1:vpKXTN4ewci03Vljg/q9QvCGUDttBOGBIa15WveJJGw=
