@@ -6,7 +6,7 @@ require (
 	github.com/caddy-dns/cloudflare v0.2.4
 	github.com/caddyserver/caddy/v2 v2.11.4
 	github.com/fabriziosalmi/caddy-waf v0.3.3
-	github.com/greenpau/caddy-security v1.1.63
+	github.com/greenpau/caddy-security v1.1.64
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
 	github.com/mholt/caddy-l4 v0.1.1
 	github.com/mholt/caddy-ratelimit v0.1.1-0.20260521172720-16aecbbcb8ca
@@ -83,7 +83,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.17 // indirect
 	github.com/googleapis/gax-go/v2 v2.22.0 // indirect
-	github.com/greenpau/go-authcrunch v1.1.40 // indirect
+	github.com/greenpau/go-authcrunch v1.1.41 // indirect
 	github.com/greenpau/versioned v1.0.36 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
