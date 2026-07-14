@@ -89,9 +89,13 @@ if [ ! -f /etc/caddy/Caddyfile ]; then
 EOF
 fi
 
+# Create log directory if it doesn't exist
+mkdir -p /var/log/caddy
+
 # Set ownership
 chown -R caddy:caddy /var/lib/caddy 2>/dev/null || true
 chown -R caddy:caddy /etc/caddy 2>/dev/null || true
+chown -R caddy:caddy /var/log/caddy 2>/dev/null || true
 
 # Add APT pinning to prefer custom repo (Debian/Ubuntu only)
 if command -v dpkg >/dev/null 2>&1 && [ ! -f /etc/apt/preferences.d/caddy-custom ]; then
