@@ -86,7 +86,9 @@ nfpms:
       - dst: /etc/caddy
         type: dir
         file_info:
-          mode: 0755
+          mode: 0750
+          owner: caddy
+          group: caddy
       # Data directory
       - dst: /var/lib/caddy
         type: dir

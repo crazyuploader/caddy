@@ -87,6 +87,7 @@ if [ ! -f /etc/caddy/Caddyfile ]; then
 # 	}
 # }
 EOF
+	chmod 0640 /etc/caddy/Caddyfile
 fi
 
 # Create log directory if it doesn't exist
@@ -96,6 +97,10 @@ mkdir -p /var/log/caddy
 chown -R caddy:caddy /var/lib/caddy 2>/dev/null || true
 chown -R caddy:caddy /etc/caddy 2>/dev/null || true
 chown -R caddy:caddy /var/log/caddy 2>/dev/null || true
+
+# Keep the config directory closed to other users. Package upgrades can
+# reset this dir to the nfpm-declared mode, so re-assert it every run.
+chmod 0750 /etc/caddy 2>/dev/null || true
 
 # Add APT pinning to prefer custom repo (Debian/Ubuntu only)
 if command -v dpkg >/dev/null 2>&1 && [ ! -f /etc/apt/preferences.d/caddy-custom ]; then
