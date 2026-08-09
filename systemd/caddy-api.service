@@ -16,6 +16,12 @@ Requires=network-online.target
 Type=notify
 User=caddy
 Group=caddy
+# Same as caddy.service. systemd creates these directories on each start and
+# gives them to the caddy user. The ownership does not depend on postinstall.sh.
+LogsDirectory=caddy
+LogsDirectoryMode=0755
+StateDirectory=caddy
+StateDirectoryMode=0755
 ExecStart=/usr/bin/caddy run --environ --resume
 TimeoutStopSec=5s
 LimitNOFILE=1048576

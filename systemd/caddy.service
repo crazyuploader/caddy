@@ -23,6 +23,17 @@ Requires=network-online.target
 Type=notify
 User=caddy
 Group=caddy
+# systemd creates these two directories on each start. It gives them to the
+# user and the group of this unit. postinstall.sh sets the same ownership, but
+# it runs only during a package install or upgrade.
+#
+# /var/log/caddy needs this. A Caddyfile that writes to
+# /var/log/caddy/access.log fails to reload with "permission denied" when the
+# file belongs to root.
+LogsDirectory=caddy
+LogsDirectoryMode=0755
+StateDirectory=caddy
+StateDirectoryMode=0755
 ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
 ExecReload=/usr/bin/caddy reload --config /etc/caddy/Caddyfile --force
 TimeoutStopSec=5s
