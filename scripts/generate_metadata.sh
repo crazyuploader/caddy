@@ -42,22 +42,6 @@ cat >public/build-metadata.json <<EOF
       "docs_url": "https://docs.authcrunch.com"
     },
     {
-      "name": "Redis Storage",
-      "icon": "🔴",
-      "description": "Store certificates and cluster state in Redis for true multi-instance deployments. Essential for Kubernetes and high-availability setups.",
-      "version": "v0.3.2",
-      "repo_url": "https://github.com/pberkel/caddy-storage-redis",
-      "docs_url": "https://github.com/pberkel/caddy-storage-redis#readme"
-    },
-    {
-      "name": "PostgreSQL Storage",
-      "icon": "🐘",
-      "description": "PostgreSQL-backed certificate storage for centralized management and compliance requirements. Integrates with existing database infrastructure.",
-      "version": "v2.3.2",
-      "repo_url": "https://github.com/yroc92/postgres-storage",
-      "docs_url": "https://github.com/yroc92/postgres-storage#readme"
-    },
-    {
       "name": "Cloudflare KV",
       "icon": "🌐",
       "description": "Leverage Cloudflare Workers KV for globally distributed edge certificate storage with ultra-low latency access.",
@@ -112,22 +96,10 @@ cat >public/build-metadata.json <<EOF
       "note": "Users can self-register via /portal/register. Configure providers like Google, GitHub, etc. via the security app."
     },
     {
-      "name": "Redis Storage",
-      "title": "Caddyfile - Redis Certificate Storage",
-      "code": "{\n    # Store certificates in Redis for cluster deployments\n    storage redis {\n        host localhost:6379\n        password {env.REDIS_PASSWORD}\n        db 0\n        key_prefix \"caddy\"\n    }\n}\n\nexample.com {\n    reverse_proxy localhost:8080\n}",
-      "note": "Ensure Redis is running and accessible. Use environment variables for sensitive data."
-    },
-    {
       "name": "Brotli Compression",
       "title": "Caddyfile - Enable Brotli Compression",
       "code": "example.com {\n    # Enable both Brotli and Gzip compression\n    encode {\n        brotli 6  # Compression level (0-11)\n        gzip 6    # Fallback for older browsers\n    }\n    \n    file_server\n    root * /var/www/html\n}",
       "note": "Brotli level 6 provides a good balance between compression ratio and speed."
-    },
-    {
-      "name": "PostgreSQL Storage",
-      "title": "Caddyfile - PostgreSQL Storage",
-      "code": "{\n    # Use PostgreSQL for certificate storage\n    storage postgres {\n        host localhost\n        port 5432\n        database caddy\n        user caddy\n        password {env.POSTGRES_PASSWORD}\n        table_name certificates\n    }\n}\n\nexample.com {\n    reverse_proxy localhost:3000\n}",
-      "note": "Create the database and user beforehand. The table will be created automatically."
     }
   ]
 }

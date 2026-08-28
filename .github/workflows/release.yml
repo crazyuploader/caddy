@@ -194,8 +194,6 @@ jobs:
 
           - dns.providers.cloudflare
           - caddy.security
-          - caddy.storage.redis
-          - caddy.storage.postgres
           - caddy.storage.cloudflare_kv
           - http.encoders.br
           - http.handlers.rate_limit

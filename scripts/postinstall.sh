@@ -44,8 +44,6 @@ if [ ! -f /etc/caddy/Caddyfile ]; then
 # Included plugins:
 # - Cloudflare DNS (dns.providers.cloudflare)
 # - Caddy Security (caddy.security)
-# - Redis Storage (caddy.storage.redis)
-# - Postgres Storage (caddy.storage.postgres)
 # - Cloudflare KV (caddy.storage.cloudflare_kv)
 # - Brotli (http.encoders.br)
 # - Rate Limit (http.handlers.rate_limit)

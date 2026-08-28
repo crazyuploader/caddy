@@ -46,7 +46,7 @@ jobs:
           # Check modules
           MODULES=$("$CADDY_BIN" list-modules)
 
-          REQUIRED=("dns.providers.cloudflare" "security" "caddy.storage.redis" "caddy.storage.postgres" "caddy.storage.cloudflare_kv" "http.encoders.br" "http.handlers.rate_limit" "layer4" "http.handlers.waf")
+          REQUIRED=("dns.providers.cloudflare" "security" "caddy.storage.cloudflare_kv" "http.encoders.br" "http.handlers.rate_limit" "layer4" "http.handlers.waf")
 
           for mod in "${REQUIRED[@]}"; do
             if echo "$MODULES" | grep -q "$mod"; then
@@ -64,24 +64,7 @@ jobs:
   upstream-tests:
     runs-on: ubuntu-latest
 
-    services:
-      # postgres-storage's tests use this via CONN_STR below.
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
-
     env:
-      CONN_STR: "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"
       # A dependency's own tests pull in its test-only deps (testify etc.),
       # missing from our go.sum. -mod=mod resolves them on the fly, scoped
       # to this job only.
@@ -130,12 +113,5 @@ jobs:
       - name: mholt/caddy-ratelimit
         run: go test -count=1 github.com/mholt/caddy-ratelimit/...
 
-      # Uses miniredis — no real Redis needed.
-      - name: pberkel/caddy-storage-redis
-        run: go test -count=1 github.com/pberkel/caddy-storage-redis/...
-
       - name: ueffel/caddy-brotli
         run: go test -count=1 github.com/ueffel/caddy-brotli/...
-
-      - name: yroc92/postgres-storage
-        run: go test -v -count=1 github.com/yroc92/postgres-storage/...
