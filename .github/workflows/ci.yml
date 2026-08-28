@@ -67,7 +67,7 @@ jobs:
     services:
       # postgres-storage's tests use this via CONN_STR below.
       postgres:
-        image: postgres:16-alpine
+        image: postgres:18-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
