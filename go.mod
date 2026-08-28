@@ -8,7 +8,7 @@ require (
 	github.com/fabriziosalmi/caddy-waf v0.4.1
 	github.com/greenpau/caddy-security v1.1.64
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
-	github.com/mholt/caddy-l4 v0.1.1
+	github.com/mholt/caddy-l4 v0.1.2
 	github.com/mholt/caddy-ratelimit v0.1.1-0.20260612195517-5625512f24f6
 	github.com/pberkel/caddy-storage-redis v1.8.2
 	github.com/ueffel/caddy-brotli v1.6.0
@@ -113,7 +113,7 @@ require (
 	github.com/oschwald/maxminddb-golang v1.13.1 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
 	github.com/phemmer/go-iptrie v0.0.0-20240326174613-ba542f5282c9 // indirect
-	github.com/pires/go-proxyproto v0.12.0 // indirect
+	github.com/pires/go-proxyproto v0.13.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
