@@ -315,6 +315,8 @@ github.com/mitchellh/go-ps v1.0.0/go.mod h1:J4lOc8z8yJs6vUwklHw2XEIiT4z4C40KtWVN
 github.com/mitchellh/mapstructure v1.1.2/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh9fWfEaFds41c1Y=
 github.com/mitchellh/reflectwalk v1.0.2 h1:G2LzWKi524PWgd3mLHV8Y5k7s6XUvT0Gef6zxSIeXaQ=
 github.com/mitchellh/reflectwalk v1.0.2/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
+github.com/molecule-man/go-brrr v1.3.0 h1:KEGPkUk9PYFw5+Sv/evCOSU5OmMDXCGFqQ9YjRB7GeU=
+github.com/molecule-man/go-brrr v1.3.0/go.mod h1:7ybW6/7gA3oKY45jOfVNjSJDtrr6ea4tzbsTkjmQDC4=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
 github.com/nicksnyder/go-i18n/v2 v2.6.1 h1:JDEJraFsQE17Dut9HFDHzCoAWGEQJom5s0TRd17NIEQ=
@@ -440,6 +442,8 @@ github.com/tidwall/sjson v1.2.5 h1:kLy8mja+1c9jlljvWTlSazM7cKDRfJuR/bOJhcY5NcY=
 github.com/tidwall/sjson v1.2.5/go.mod h1:Fvgq9kS/6ociJEDnK0Fk1cpYF4FIW6ZF7LAe+6jwd28=
 github.com/ueffel/caddy-brotli v1.6.0 h1:jmK/L0mXmm9Hh4lA1l1b92Dpkgzq2EQgkDIiYWS2FUs=
 github.com/ueffel/caddy-brotli v1.6.0/go.mod h1:OlE3r8DyERtSIhq/scebrGsNag5UTWyBBlbpNC8cxwg=
+github.com/ueffel/caddy-brotli v1.7.0 h1:xwXaBvTzVZc8Ae6DAB2WiGgJ6I+UG+RnttXdicYpBZI=
+github.com/ueffel/caddy-brotli v1.7.0/go.mod h1:PBdQ4oe1jaYCfGWjdWGZ8LPFZYcZ58sBuuiatqW/6uI=
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/urfave/cli v1.22.17 h1:SYzXoiPfQjHBbkYxbew5prZHS1TOLT3ierW8SYLqtVQ=
 github.com/urfave/cli v1.22.17/go.mod h1:b0ht0aqgH/6pBYzzxURyrM4xXNgsoT/n2ZzwQiEhNVo=
