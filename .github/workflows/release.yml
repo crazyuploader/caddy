@@ -202,6 +202,8 @@ jobs:
           - http.handlers.rate_limit
           - layer4
           - http.handlers.waf
+          - http.handlers.crowdsec
+          - http.handlers.appsec
 
           [View Documentation](https://caddy.devjugal.com)
           EOF

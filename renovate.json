@@ -13,6 +13,7 @@
       "matchPackageNames": [
         "github.com/mholt/caddy-ratelimit",
         "github.com/fabriziosalmi/caddy-waf",
+        "github.com/hslatman/caddy-crowdsec-bouncer",
         "github.com/mholt/caddy-l4"
       ],
       "versioning": "semver",
