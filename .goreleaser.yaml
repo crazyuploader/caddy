@@ -159,7 +159,6 @@ homebrew_casks:
       name: homebrew-tools
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     name: caddy
-    ids: [binary]
     homepage: "https://github.com/crazyuploader/caddy"
     description: "Web server with custom plugins (DNS, security, storage, brotli, WAF)"
     license: "Apache-2.0"
