@@ -6,7 +6,7 @@ require (
 	github.com/caddy-dns/cloudflare v0.2.4
 	github.com/caddyserver/caddy/v2 v2.11.9
 	github.com/fabriziosalmi/caddy-waf v0.4.18
-	github.com/greenpau/caddy-security v1.7.0
+	github.com/greenpau/caddy-security v1.1.64
 	github.com/mentimeter/caddy-storage-cf-kv v0.0.0-20250219160011-939ac14649ca
 	github.com/mholt/caddy-l4 v0.1.3
 	github.com/mholt/caddy-ratelimit v0.1.1-0.20260612195517-5625512f24f6
