@@ -14,6 +14,8 @@ import (
 	_ "github.com/caddy-dns/cloudflare"
 	_ "github.com/fabriziosalmi/caddy-waf"
 	_ "github.com/greenpau/caddy-security"
+	_ "github.com/hslatman/caddy-crowdsec-bouncer/appsec"
+	_ "github.com/hslatman/caddy-crowdsec-bouncer/http"
 	_ "github.com/mentimeter/caddy-storage-cf-kv"
 	_ "github.com/mholt/caddy-l4"
 	_ "github.com/mholt/caddy-ratelimit"

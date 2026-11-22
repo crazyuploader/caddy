@@ -46,7 +46,7 @@ jobs:
           # Check modules
           MODULES=$("$CADDY_BIN" list-modules)
 
-          REQUIRED=("dns.providers.cloudflare" "security" "caddy.storage.cloudflare_kv" "http.encoders.br" "http.handlers.rate_limit" "layer4" "http.handlers.waf")
+          REQUIRED=("dns.providers.cloudflare" "security" "caddy.storage.cloudflare_kv" "http.encoders.br" "http.handlers.rate_limit" "layer4" "http.handlers.waf" "crowdsec" "http.handlers.crowdsec" "http.handlers.appsec")
 
           for mod in "${REQUIRED[@]}"; do
             if echo "$MODULES" | grep -q "$mod"; then
@@ -115,3 +115,14 @@ jobs:
 
       - name: ueffel/caddy-brotli
         run: go test -count=1 github.com/ueffel/caddy-brotli/...
+
+      # test/ starts real CrowdSec + AppSec containers (testcontainers, Docker).
+      - name: hslatman/caddy-crowdsec-bouncer
+        run: go test -count=1 -skip '^TestAppSec$' github.com/hslatman/caddy-crowdsec-bouncer/...
+
+      # TestAppSec asserts on live CrowdSec Hub rules pulled at test time
+      # (crowdsec:slim + latest appsec collections), so hub changes can fail
+      # it without any plugin change. Visible but non-blocking.
+      - name: hslatman/caddy-crowdsec-bouncer (AppSec, live hub rules)
+        continue-on-error: true
+        run: go test -v -count=1 -run '^TestAppSec$' github.com/hslatman/caddy-crowdsec-bouncer/test

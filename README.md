@@ -16,6 +16,7 @@ Custom [Caddy Web Server](https://github.com/caddyserver/caddy) build with addit
 | [rate-limit](https://github.com/mholt/caddy-ratelimit)             | HTTP rate limiting                               |
 | [layer4](https://github.com/mholt/caddy-l4)                        | Layer 4 (TCP/UDP) matching and proxying          |
 | [caddy-waf](https://github.com/fabriziosalmi/caddy-waf)            | Web Application Firewall (WAF)                   |
+| [crowdsec](https://github.com/hslatman/caddy-crowdsec-bouncer)     | CrowdSec bouncer and AppSec handler              |
 
 ## Installation
 
@@ -130,7 +131,7 @@ sudo nano /etc/caddy/Caddyfile
 ### Verify Plugins
 
 ```bash
-caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.security|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit|layer4|http.handlers.waf)'
+caddy list-modules | grep -E '(dns.providers.cloudflare|caddy.security|caddy.storage.cloudflare_kv|http.encoders.br|http.handlers.rate_limit|layer4|http.handlers.waf|http.handlers.crowdsec|http.handlers.appsec)'
 ```
 
 ## License

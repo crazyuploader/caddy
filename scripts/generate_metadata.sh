@@ -80,6 +80,14 @@ cat >public/build-metadata.json <<EOF
       "version": "v0.3.3",
       "repo_url": "https://github.com/fabriziosalmi/caddy-waf",
       "docs_url": "https://github.com/fabriziosalmi/caddy-waf#readme"
+    },
+    {
+      "name": "CrowdSec",
+      "icon": "🛡️",
+      "description": "CrowdSec bouncer that blocks IPs flagged by a CrowdSec LAPI, plus an AppSec handler for WAF-style request inspection.",
+      "version": "v0.15.0",
+      "repo_url": "https://github.com/hslatman/caddy-crowdsec-bouncer",
+      "docs_url": "https://github.com/hslatman/caddy-crowdsec-bouncer#readme"
     }
   ],
   "examples": [
