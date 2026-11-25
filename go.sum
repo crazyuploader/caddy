@@ -175,6 +175,8 @@ github.com/emersion/go-smtp v0.24.0 h1:g6AfoF140mvW0vLNPD/LuCBLEAdlxOjIXqbIkJIS6
 github.com/emersion/go-smtp v0.24.0/go.mod h1:ZtRRkbTyp2XTHCA+BmyTFTrj8xY4I+b4McvHxCU2gsQ=
 github.com/fabriziosalmi/caddy-waf v0.4.18 h1:KHP8eFq6WC+Xj8kjn5vB0pa6HOR/GXGIsdCCzjRVRKA=
 github.com/fabriziosalmi/caddy-waf v0.4.18/go.mod h1:tGUtdds3/o8yOe54ryUU2ZaaO7hstjAjIEFutqDnWMw=
+github.com/fabriziosalmi/caddy-waf v0.4.19 h1:R7dHJ++8x3LGd5jWD9KtyEE6d683zCDSVZ+kXXjDpRE=
+github.com/fabriziosalmi/caddy-waf v0.4.19/go.mod h1:U3zUVxC6U0qmLYSMfawpHlY28So58qkquGr0kGykQ4o=
 github.com/felixge/httpsnoop v1.1.0 h1:3YtUj32ZZkqZtt3sZZsClsymw/QDuVfpNhoA31zeORc=
 github.com/felixge/httpsnoop v1.1.0/go.mod h1:Zqxgdd+1Rkcz8euOqdr7lqgCRJztwr5hp9vDSi5UZCE=
 github.com/fortytw2/leaktest v1.3.0 h1:u8491cBMTQ8ft8aeV+adlcytMZylmA5nnwwkRZjI8vw=
